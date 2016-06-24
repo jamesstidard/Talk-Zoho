@@ -25,14 +25,15 @@ def unwrap_items(response):
 def unwrap_error(zoho_error):
     try:
         response   = zoho_error['response']
-        filtered   = [value for key, value in response.items() if key.lower() != 'url']  # noqa
+        filtered   = {key: value for key, value in response.items() if key.lower() != 'uri'}  # noqa
 
         # Dont know the error name but should ony be one key left
         assert len(filtered) == 1
-        code, message = filtered[0]['code'], filtered[0]['message']
+        _, error      = filtered.popitem()
+        code, message = error['code'], error['message']
 
         status_code = http_status_code(zoho_code=code)
-        raise HTTPError(status_code, message=message)
+        raise HTTPError(status_code, reason=message)
     except (AssertionError, KeyError, IndexError):
         raise ValueError("Couldn't parse zoho result")
 
@@ -65,4 +66,6 @@ def http_status_code(*, zoho_code):
 
 
 def translate_item(item):
-    return {kwarg['val']: kwarg['content'] for kwarg in item.get('fl', item.get('FL'))}  # noqa
+    fields = item.get('fl', item.get('FL'))
+    fields = fields if isinstance(fields, list) else [fields]
+    return {kwarg['val']: kwarg['content'] for kwarg in fields}

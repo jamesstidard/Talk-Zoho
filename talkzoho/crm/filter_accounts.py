@@ -2,6 +2,7 @@ from urllib.parse import urlencode
 
 from tornado.httpclient import AsyncHTTPClient
 from tornado.web import HTTPError
+from tornado.escape import json_decode
 
 from talkzoho.regions import US
 from talkzoho.utils import create_url
@@ -19,11 +20,13 @@ async def filter_accounts(*,
                           auth_token,
                           term=None,
                           region=US,
-                          columns=[],
+                          columns=None,
                           offset=0,
                           limit=0):
+    if columns is None:
+        columns = []
     client   = AsyncHTTPClient()
-    path     = API_PATH + '/' + RESOURCE
+    path     = API_PATH + '/' + RESOURCE + '/getRecords'
     endpoint = create_url(BASE_URL, tld=region, path=path)
 
     column_filter = select_columns(RESOURCE, columns) if columns else None
@@ -48,10 +51,12 @@ async def filter_accounts(*,
             endpoint=endpoint,
             query=query))
 
+        body = json_decode(response.body.decode("utf-8"))
+
         try:
-            accounts = unwrap_items(response.body.decode("utf-8"))
+            accounts = unwrap_items(body)
         except HTTPError as http_error:
-            # if paging and hit end supress error
+            # if paging and hit end suppress error
             # unless first request caused the 404
             if http_error.status_code == 404 and from_index != offset:
                 paging = False
