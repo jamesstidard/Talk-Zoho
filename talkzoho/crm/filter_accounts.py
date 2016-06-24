@@ -29,8 +29,7 @@ async def filter_accounts(*,
     path     = API_PATH + '/' + RESOURCE + '/getRecords'
     endpoint = create_url(BASE_URL, tld=region, path=path)
 
-    column_filter = select_columns(RESOURCE, columns) if columns else None
-    batch_size    = limit if limit and limit <= MAX_PAGE_SIZE else MAX_PAGE_SIZE  # noqa
+    batch_size = limit if limit and limit <= MAX_PAGE_SIZE else MAX_PAGE_SIZE  # noqa
 
     paging     = True
     from_index = offset
@@ -43,9 +42,11 @@ async def filter_accounts(*,
             'version': 2,
             'newFormat': 2,
             'authtoken': auth_token,
-            'selectColumns': column_filter,
             'fromIndex': from_index,
             'toIndex': to_index})
+
+        if columns:
+            query['selectColumns'] = select_columns(RESOURCE, columns)
 
         response = await client.fetch('{endpoint}?{query}'.format(
             endpoint=endpoint,
