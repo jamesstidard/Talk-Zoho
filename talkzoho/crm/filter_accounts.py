@@ -11,9 +11,7 @@ from talkzoho.crm.utils import select_columns, unwrap_items
 
 RESOURCE   = 'Accounts'
 BASE_QUERY = {
-    'scope': SCOPE,
-    'version': 2,
-    'newFormat': 2,
+
 }
 
 
@@ -37,19 +35,21 @@ async def filter_accounts(*,
     results    = []
 
     while paging:
-        query = urlencode(
-            **BASE_QUERY,
-            authtoken=auth_token,
-            selectColumns=column_filter,
-            fromIndex=from_index,
-            toIndex=to_index)
+        query = urlencode({
+            'scope': SCOPE,
+            'version': 2,
+            'newFormat': 2,
+            'authtoken': auth_token,
+            'selectColumns': column_filter,
+            'fromIndex': from_index,
+            'toIndex': to_index})
 
         response = await client.fetch('{endpoint}?{query}'.format(
             endpoint=endpoint,
             query=query))
 
         try:
-            accounts = unwrap_items(response)
+            accounts = unwrap_items(response.body.decode("utf-8"))
         except HTTPError as http_error:
             # if paging and hit end supress error
             # unless first request caused the 404

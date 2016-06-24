@@ -3,3 +3,6 @@ API_PATH            = "/crm/private/json"
 SCOPE               = 'crmapi'
 MAX_PAGE_SIZE       = 200
 REQUESTS_PER_SECOND = None
+
+
+from .filter_accounts import filter_accounts  # noqa

@@ -1,4 +1,5 @@
 init:
 	pip install -r requirements/development.txt
+	pip install -e .
 test:
-	py.test test/
+	py.test tests/

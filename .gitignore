@@ -1,2 +1,12 @@
 venv
 .env*
+
+*.egg-info
+
+__cache__
+.cache
+__pycache__
+
+.idea
+
+.idea/vcs.xml
