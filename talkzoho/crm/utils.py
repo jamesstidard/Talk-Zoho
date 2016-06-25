@@ -2,7 +2,7 @@ from tornado.web import HTTPError
 
 
 def select_columns(resource, *columns):
-    return resource.lower() + '(' + ','.join(columns) + ')'
+    return resource.lower() + '(' + ','.join(columns) + ')' if columns else ''
 
 
 def unwrap_items(response):
@@ -38,7 +38,7 @@ def unwrap_error(zoho_error):
         raise ValueError("Couldn't parse zoho result")
 
 
-def http_status_code(*, zoho_code):
+def http_status_code(*, zoho_code):  # pragma: no cover
     zoho_code = str(zoho_code)
 
     if zoho_code in ["4000", "4401", "4600", "4831", "4832", "4835", "4101", "4420"]:  # noqa
@@ -68,4 +68,8 @@ def http_status_code(*, zoho_code):
 def translate_item(item):
     fields = item.get('fl', item.get('FL'))
     fields = fields if isinstance(fields, list) else [fields]
-    return {kwarg['val']: kwarg['content'] for kwarg in fields}
+
+    def nullify(value):
+        return None if value == 'null' else value
+
+    return {kwarg['val']: nullify(kwarg['content']) for kwarg in fields}
