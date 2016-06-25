@@ -76,7 +76,7 @@ async def filter_accounts(*,
         target = ' '.join(values)
         return fuzz.partial_ratio(term, target)
 
-    results = sorted(results, key=fuzzy_score, reverse=True)
-    results = results[:limit]
+    if term:
+        results = sorted(results, key=fuzzy_score, reverse=True)
 
-    return results
+    return results[:limit]
