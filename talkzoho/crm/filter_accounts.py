@@ -72,7 +72,7 @@ async def filter_accounts(*,
             to_index  += batch_size
 
     def fuzzy_score(account):
-        values = [v for v in account.values() if v]
+        values = [str(v) for v in account.values() if v]
         target = ' '.join(values)
         return fuzz.partial_ratio(term, target)
 
