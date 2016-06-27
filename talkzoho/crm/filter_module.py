@@ -12,21 +12,20 @@ from talkzoho.utils import create_url
 from talkzoho.crm import BASE_URL, API_PATH, SCOPE, MAX_PAGE_SIZE
 from talkzoho.crm.utils import select_columns, unwrap_items
 
-RESOURCE   = 'Accounts'
 
-
-async def filter_accounts(*,
-                          auth_token,
-                          term=None,
-                          region=US,
-                          columns=None,
-                          offset=0,
-                          limit=None):
+async def filter_module(module,
+                        *,
+                        auth_token,
+                        term=None,
+                        region=US,
+                        columns=None,
+                        offset=0,
+                        limit=None):
     if columns is None:
         columns = []
 
     client   = AsyncHTTPClient()
-    path     = API_PATH + '/' + RESOURCE + '/getRecords'
+    path     = API_PATH + '/' + module + '/getRecords'
     endpoint = create_url(BASE_URL, tld=region, path=path)
 
     if limit == 0:
@@ -51,7 +50,7 @@ async def filter_accounts(*,
             'authtoken': auth_token,
             'fromIndex': from_index,
             'toIndex': to_index,
-            'selectColumns': select_columns(RESOURCE, *columns)})
+            'selectColumns': select_columns(module, *columns)})
 
         url      = endpoint + '?' + query
         response = await client.fetch(url, method='GET')
@@ -71,8 +70,8 @@ async def filter_accounts(*,
             from_index = to_index + 1
             to_index  += batch_size
 
-    def fuzzy_score(account):
-        values = [str(v) for v in account.values() if v]
+    def fuzzy_score(resource):
+        values = [str(v) for v in resource.values() if v]
         target = ' '.join(values)
         return fuzz.partial_ratio(term, target)
 

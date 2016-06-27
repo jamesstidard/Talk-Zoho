@@ -5,4 +5,6 @@ MAX_PAGE_SIZE       = 200
 REQUESTS_PER_SECOND = None
 
 
-from .filter_accounts import filter_accounts  # noqa
+from .accounts.filter_accounts import filter_accounts  # noqa
+from .leads.filter_leads import filter_leads  # noqa
+from .filter_module import filter_module  # noqa
