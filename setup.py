@@ -12,7 +12,7 @@ reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
     name='Talk Zoho',
-    version='0.1.dev3',
+    version='0.1.dev4',
     packages=[
         'talkzoho',
         'talkzoho.crm',
