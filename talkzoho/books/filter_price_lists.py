@@ -77,4 +77,4 @@ async def filter_price_lists(*,
         results = sorted(results, key=fuzzy_score, reverse=True)
 
     results = results[:limit]
-    return [{k: pl[k] for k in columns if k in columns} for pl in results]
+    return [{k: pl[k] for k in columns if not columns or k in columns} for pl in results]
