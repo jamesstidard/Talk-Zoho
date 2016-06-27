@@ -1,3 +1,5 @@
+import os
+
 from urllib.parse import urlencode
 
 from fuzzywuzzy import fuzz
@@ -9,7 +11,7 @@ from tornado.escape import json_decode
 from talkzoho.regions import US
 from talkzoho.utils import create_url
 
-from talkzoho.crm import BASE_URL, API_PATH, SCOPE, MAX_PAGE_SIZE
+from talkzoho.crm import BASE_URL, API_PATH, SCOPE, MAX_PAGE_SIZE, ENVIRON_AUTH_TOKEN
 from talkzoho.crm.utils import select_columns, unwrap_items
 
 
@@ -47,7 +49,7 @@ async def filter_module(module,
             'scope': SCOPE,
             'version': 2,
             'newFormat': 2,
-            'authtoken': auth_token,
+            'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN),
             'fromIndex': from_index,
             'toIndex': to_index,
             'selectColumns': select_columns(module, *columns)})

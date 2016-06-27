@@ -1,3 +1,4 @@
+ENVIRON_AUTH_TOKEN  = 'ZOHO_CRM_AUTH_TOKEN'
 BASE_URL            = "https://crm.zoho."
 API_PATH            = "/crm/private/json"
 SCOPE               = 'crmapi'

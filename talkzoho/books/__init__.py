@@ -1,3 +1,4 @@
+ENVIRON_AUTH_TOKEN  = 'ZOHO_BOOKS_AUTH_TOKEN'
 BASE_URL            = "https://books.zoho."
 API_PATH            = "/api/v3"
 SCOPE               = 'booksapi'

@@ -1,8 +1,10 @@
+import os
+
 import requests
 
 from talkzoho.regions import US
 from talkzoho.utils import create_url
-from talkzoho.crm import BASE_URL, API_PATH, SCOPE
+from talkzoho.crm import BASE_URL, API_PATH, SCOPE, ENVIRON_AUTH_TOKEN
 
 
 def upload_file(module,
@@ -15,7 +17,7 @@ def upload_file(module,
     parameters   = {
         'id': int(id),
         'scope': SCOPE,
-        'authtoken': auth_token}
+        'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN)}
     files = {
         'content': (file_name, file_bytes)}
 

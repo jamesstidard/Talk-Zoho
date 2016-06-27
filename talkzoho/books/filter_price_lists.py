@@ -1,3 +1,4 @@
+import os
 from math import ceil
 
 from urllib.parse import urlencode
@@ -12,7 +13,7 @@ from tornado.escape import json_decode
 from talkzoho.regions import US
 from talkzoho.utils import create_url
 
-from talkzoho.books import BASE_URL, API_PATH, SCOPE, MAX_PAGE_SIZE
+from talkzoho.books import BASE_URL, API_PATH, SCOPE, MAX_PAGE_SIZE, ENVIRON_AUTH_TOKEN
 
 RESOURCE = 'pricebooks'
 
@@ -45,7 +46,7 @@ async def filter_price_lists(*,
     while paging and (term or not limit or len(results) < limit):
         query = urlencode({
             'scope': SCOPE,
-            'authtoken': auth_token,
+            'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN),
             'organization_id': organization_id,
             'per_page': batch_size,
             'page': page_index})
