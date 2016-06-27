@@ -4,7 +4,7 @@ from pip.req import parse_requirements as parse
 
 setup(
     name='Talk Zoho',
-    version='0.1.dev9',
+    version='0.2.dev0',
     packages=[
         'talkzoho',
         'talkzoho.crm',
