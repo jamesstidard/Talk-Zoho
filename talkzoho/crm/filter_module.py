@@ -17,7 +17,7 @@ from talkzoho.crm.utils import select_columns, unwrap_items
 
 async def filter_module(module,
                         *,
-                        auth_token,
+                        auth_token=None,
                         term=None,
                         region=US,
                         columns=None,

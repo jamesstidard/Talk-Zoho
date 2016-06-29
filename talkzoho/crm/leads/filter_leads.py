@@ -4,7 +4,7 @@ from talkzoho.crm.leads import MODULE
 
 
 async def filter_leads(*,
-                       auth_token,
+                       auth_token=None,
                        term=None,
                        region=US,
                        columns=None,

@@ -9,7 +9,7 @@ from talkzoho.crm import BASE_URL, API_PATH, SCOPE, ENVIRON_AUTH_TOKEN
 
 def upload_file(module,
                 *,
-                auth_token,
+                auth_token=None,
                 region=US,
                 id,
                 file_name,

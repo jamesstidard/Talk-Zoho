@@ -19,7 +19,7 @@ RESOURCE = 'pricebooks'
 
 
 async def filter_price_lists(*,
-                             auth_token,
+                             auth_token=None,
                              organization_id=None,
                              term=None,
                              region=US,
