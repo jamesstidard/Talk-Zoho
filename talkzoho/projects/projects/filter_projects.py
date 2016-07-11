@@ -51,9 +51,9 @@ async def filter_projects(*,
 
         url           = endpoint + '?' + query
         response      = await client.fetch(url, method='GET')
-        reached_limit = to_index + 1 >= limit
+        reached_limit = limit and to_index + 1 >= limit
 
-        if response.status_code == 204 or (term is None and reached_limit):
+        if response.code == 204 or (term is None and reached_limit):
             break
 
         body  = json_decode(response.body.decode("utf-8"))

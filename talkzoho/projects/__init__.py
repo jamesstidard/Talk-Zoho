@@ -6,3 +6,4 @@ REQUESTS_PER_SECOND = None  # TODO: done per endpoint at 100 in two minutes
 
 
 from .projects.get_project import get_project  # noqa
+from .projects.filter_projects import filter_projects  # noqa
