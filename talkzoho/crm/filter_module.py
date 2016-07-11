@@ -50,8 +50,8 @@ async def filter_module(module,
             'version': 2,
             'newFormat': 2,
             'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN),
-            'fromIndex': from_index,
-            'toIndex': to_index,
+            'fromIndex': from_index + 1,  # Zoho indexes at one not zero
+            'toIndex': to_index + 1,
             'selectColumns': select_columns(module, *columns)})
 
         url      = endpoint + '?' + query
@@ -59,7 +59,7 @@ async def filter_module(module,
         body     = json_decode(response.body.decode("utf-8"))
 
         try:
-            accounts = unwrap_items(body)
+            items = unwrap_items(body)
         except HTTPError as http_error:
             # if paging and hit end suppress error
             # unless first request caused the 404
@@ -68,7 +68,7 @@ async def filter_module(module,
             else:
                 raise
         else:
-            results   += accounts
+            results   += items
             from_index = to_index + 1
             to_index  += batch_size
 

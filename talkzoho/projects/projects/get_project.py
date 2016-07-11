@@ -5,8 +5,8 @@ from urllib.parse import urlencode
 from tornado.httpclient import AsyncHTTPClient
 from tornado.escape import json_decode
 
-from talkzoho.regions import US
 from talkzoho.utils import create_url
+from talkzoho.regions import US
 from talkzoho.projects import BASE_URL, API_PATH, ENVIRON_AUTH_TOKEN
 from talkzoho.projects.utils import unwrap_items
 
