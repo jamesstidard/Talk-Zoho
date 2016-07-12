@@ -5,8 +5,8 @@ from pip.req import parse_requirements as parse
 
 setup(
     name='Talk Zoho',
-    version='0.3.dev4',
+    version='0.3.dev5',
     packages=find_packages(exclude=('tests', 'tests.*')),
     long_description=open('README.md').read(),
-    install_requires=[str(r.req) for r in parse('requirements.txt', session=False)],  # noqa
+    install_requires=[str(r.req) for r in parse('requirements/production.txt', session=False)],  # noqa
 )
