@@ -23,7 +23,7 @@ async def filter_accounts(*,
                           columns=None,
                           offset=0,
                           limit=None,
-                          portal_id,
+                          portal,
                           department):
     client   = AsyncHTTPClient()
     path     = API_PATH + '/' + MODULE + '/getrecords'
@@ -37,22 +37,26 @@ async def filter_accounts(*,
         batch_size = MAX_PAGE_SIZE
 
     paging     = True
-    from_index = offset
-    to_index   = offset + batch_size - 1
+    from_index = offset + 1  # Zoho indexes at one not zero
+    to_index   = offset + batch_size
     results    = []
 
     # Loop until we reach index we need, unless their is a search term.
     # If search term we need all records.
-    while paging and (from_index < to_index or term):
-        query = urlencode({
+    while paging and (term or limit is None or to_index <= limit):
+        print(from_index, to_index)
+        query = {
             'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN),
-            'portal': portal_id,
             'department': department,
-            'selectfields': select_columns(MODULE, columns),
-            'fromindex': from_index + 1,  # Zoho indexes at one not zero
-            'toindex': to_index + 1})
+            'fromindex': from_index,
+            'toindex': to_index,
+            'portal': portal}
 
-        url      = endpoint + '?' + query
+        if columns:
+            query['selectfields'] = select_columns(MODULE, columns)
+
+        url      = endpoint + '?' + urlencode(query)
+        print(url)
         response = await client.fetch(url, method='GET')
         body     = json_decode(response.body.decode("utf-8"))
 

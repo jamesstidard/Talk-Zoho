@@ -3,3 +3,5 @@ init:
 	pip install -e .
 test:
 	py.test --cov=talkzoho tests/
+test_fail:
+	py.test --cov=talkzoho --ff -x tests/

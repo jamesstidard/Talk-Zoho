@@ -35,23 +35,25 @@ async def filter_module(module,
         batch_size = MAX_PAGE_SIZE
 
     paging     = True
-    from_index = offset
+    from_index = offset + 1  # Zoho indexes at one not zero
     to_index   = offset + batch_size
     results    = []
 
     # Loop until we reach index we need, unless their is a search term.
     # If search term we need all records.
-    while paging and (from_index < to_index or term):
-        query = urlencode({
-            'scope': SCOPE,
-            'version': 2,
-            'newFormat': 2,
+    while paging and (term or limit is None or to_index <= limit):
+        query = {
             'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN),
-            'fromIndex': from_index + 1,  # Zoho indexes at one not zero
-            'toIndex': to_index + 1,
-            'selectColumns': select_columns(module, columns)})
+            'fromIndex': from_index,
+            'toIndex': to_index,
+            'newFormat': 2,
+            'version': 2,
+            'scope': SCOPE}
 
-        url      = endpoint + '?' + query
+        if columns:
+            query['selectColumns'] = select_columns(module, columns)
+
+        url      = endpoint + '?' + urlencode(query)
         response = await client.fetch(url, method='GET')
         body     = json_decode(response.body.decode("utf-8"))
 
@@ -60,7 +62,7 @@ async def filter_module(module,
         except HTTPError as http_error:
             # if paging and hit end suppress error
             # unless first request caused the 404
-            if http_error.status_code == 404 and from_index != offset:
+            if http_error.status_code == 404 and from_index - 1 != offset:
                 paging = False
             else:
                 raise

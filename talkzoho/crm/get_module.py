@@ -24,15 +24,17 @@ async def get_module(module,
     client   = AsyncHTTPClient()
     path     = API_PATH + '/' + module + '/getRecordById'
     endpoint = create_url(BASE_URL, tld=region, path=path)
-    query    = urlencode({
+    query    = {
         'id': id,
         'scope': SCOPE,
         'version': 2,
         'newFormat': 2,
-        'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN),
-        'selectColumns': select_columns(module, columns)})
+        'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN)}
 
-    url      = endpoint + '?' + query
+    if columns:
+        query['selectColumns'] = select_columns(module, columns)
+
+    url      = endpoint + '?' + urlencode(query)
     response = await client.fetch(url, method='GET')
     body     = json_decode(response.body.decode("utf-8"))
 

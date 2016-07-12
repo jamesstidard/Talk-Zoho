@@ -13,27 +13,29 @@ from talkzoho.utils import create_url
 
 from talkzoho.support import BASE_URL, API_PATH, ENVIRON_AUTH_TOKEN
 from talkzoho.support.utils import select_columns, unwrap_items
+from talkzoho.support.accounts import MODULE
 
 
-async def get_account(module,
-                      *,
+async def get_account(*,
                       auth_token=None,
                       region=US,
                       columns=None,
-                      portal_id,
+                      portal,
                       department,
                       id):
     client   = AsyncHTTPClient()
-    path     = API_PATH + '/' + module + '/getRecordById'
+    path     = API_PATH + '/' + MODULE + '/getRecordById'
     endpoint = create_url(BASE_URL, tld=region, path=path)
-    query    = urlencode({
+    query    = {
         'id': id,
         'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN),
-        'portal': portal_id,
-        'department': department,
-        'selectfields': select_columns(module, columns)})
+        'portal': portal,
+        'department': department}
 
-    url      = endpoint + '?' + query
+    if columns:
+        query['selectfields'] = select_columns(MODULE, columns)
+
+    url      = endpoint + '?' + urlencode(query)
     response = await client.fetch(url, method='GET')
     body     = json_decode(response.body.decode("utf-8"))
 

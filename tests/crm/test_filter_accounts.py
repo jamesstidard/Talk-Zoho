@@ -68,5 +68,5 @@ def test_zero_limit(auth_token):
 @pytest.mark.gen_test
 def test_404(auth_token):
     with pytest.raises(HTTPError) as excinfo:
-        yield filter_accounts(auth_token=auth_token, region=EU, offset=40000)
+        yield filter_accounts(auth_token=auth_token, region=EU, offset=4000000)
     assert excinfo.value.status_code == 404
