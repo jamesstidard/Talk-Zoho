@@ -44,7 +44,6 @@ async def filter_accounts(*,
     # Loop until we reach index we need, unless their is a search term.
     # If search term we need all records.
     while paging and (term or limit is None or to_index <= limit):
-        print(from_index, to_index)
         query = {
             'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN),
             'department': department,
@@ -56,7 +55,6 @@ async def filter_accounts(*,
             query['selectfields'] = select_columns(MODULE, columns)
 
         url      = endpoint + '?' + urlencode(query)
-        print(url)
         response = await client.fetch(url, method='GET')
         body     = json_decode(response.body.decode("utf-8"))
 
@@ -65,7 +63,7 @@ async def filter_accounts(*,
         except HTTPError as http_error:
             # if paging and hit end suppress error
             # unless first request caused the 404
-            if http_error.status_code == 404 and from_index != offset:
+            if http_error.status_code == 404 and from_index - 1 != offset:
                 paging = False
             else:
                 raise
@@ -82,4 +80,5 @@ async def filter_accounts(*,
     if term:
         results = sorted(results, key=fuzzy_score, reverse=True)
 
+    print(results)
     return results[:limit]

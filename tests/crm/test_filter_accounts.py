@@ -26,20 +26,21 @@ def test_one_account_is_list(auth_token):
 
 @pytest.mark.gen_test
 def test_account_looks_right(auth_token):
-    accounts = yield filter_accounts(auth_token=auth_token, region=EU, limit=1)
-    account  = accounts[0]
+    [account] = yield filter_accounts(
+        auth_token=auth_token,
+        region=EU,
+        limit=1)
     assert 'ACCOUNTID' in account.keys()
     assert len(account.keys()) > 5
 
 
 @pytest.mark.gen_test
 def test_column_whitelist(auth_token):
-    accounts = yield filter_accounts(
+    [account] = yield filter_accounts(
         auth_token=auth_token,
         region=EU,
         limit=1,
         columns=['ACCOUNTID', 'Account Name'])
-    account = accounts[0]
     assert 'ACCOUNTID' in account.keys()
     assert 'Account Name' in account.keys()
     assert len(account.keys()) == 2
@@ -47,12 +48,11 @@ def test_column_whitelist(auth_token):
 
 @pytest.mark.gen_test
 def test_search_term(auth_token):
-    accounts = yield filter_accounts(
+    [account] = yield filter_accounts(
         auth_token=auth_token,
         region=EU,
         limit=1,
         term='IFP')
-    account = accounts[0]
     assert account['Account Name'] == 'IFPL'
 
 
