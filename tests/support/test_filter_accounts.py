@@ -8,16 +8,16 @@ from talkzoho.regions import EU
 from talkzoho.support import filter_accounts
 
 
-@pytest.mark.gen_test
-def test_one_account_is_list(auth_token):
-    accounts = yield filter_accounts(
-        auth_token=auth_token,
-        region=EU,
-        limit=1)
-    assert len(accounts) == 1
-    assert isinstance(accounts, list)
-
-
+# @pytest.mark.gen_test
+# def test_one_account_is_list(auth_token):
+#     accounts = yield filter_accounts(
+#         auth_token=auth_token,
+#         region=EU,
+#         limit=1)
+#     assert len(accounts) == 1
+#     assert isinstance(accounts, list)
+#
+#
 # @pytest.mark.gen_test
 # def test_account_looks_right(auth_token):
 #     accounts = yield filter_accounts(auth_token=auth_token, region=EU, limit=1)

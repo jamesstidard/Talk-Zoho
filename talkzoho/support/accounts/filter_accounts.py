@@ -12,7 +12,7 @@ from talkzoho.utils import create_url
 from talkzoho.regions import US
 from talkzoho.support.utils import select_columns, unwrap_items
 from talkzoho.support import \
-    BASE_URL, API_PATH, ENVIRON_AUTH_TOKEN, MAX_PAGE_SIZE, SCOPE
+    BASE_URL, API_PATH, ENVIRON_AUTH_TOKEN, MAX_PAGE_SIZE
 from talkzoho.support.accounts import MODULE
 
 
