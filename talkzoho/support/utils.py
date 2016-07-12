@@ -2,7 +2,7 @@ from tornado.web import HTTPError
 
 
 def select_columns(resource, columns):
-    return resource.lower() + '(' + ','.join(columns) + ')' if columns else ''
+    return resource + '(' + ','.join(columns) + ')' if columns else ''
 
 
 def unwrap_items(response, single_item=False):
@@ -45,26 +45,8 @@ def unwrap_error(zoho_error):
 def http_status_code(*, zoho_code):  # pragma: no cover
     zoho_code = str(zoho_code)
 
-    if zoho_code in ["4000", "4401", "4600", "4831", "4832", "4835", "4101", "4420"]:  # noqa
-        return 400  # bad request
-    elif zoho_code in ["4501", "4834"]:
-        return 401  # unauthorised
-    elif zoho_code in ["4502", "4890"]:
-        return 402  # payment required
-    elif zoho_code in ["4487", "4001", "401", "401.1", "401.2", "401.3"]:
-        return 403  # forbidden
-    elif zoho_code in ["4102", "4103", "4422"]:
+    if zoho_code in ["4832"]:
         return 404  # not found
-    elif zoho_code in []:
-        return 405  # method not allowed
-    elif zoho_code in ["4807"]:
-        return 413  # payload too large
-    elif zoho_code in ["4424"]:
-        return 415  # payload too large
-    elif zoho_code in ["4101", "4809"]:
-        return 423  # locked
-    elif zoho_code in ["4820", "4421", "4423"]:
-        return 429  # too many requests
     else:
         return 500  # internal server error
 

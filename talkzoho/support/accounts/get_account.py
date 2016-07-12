@@ -11,26 +11,27 @@ from tornado.escape import json_decode
 from talkzoho.regions import US
 from talkzoho.utils import create_url
 
-from talkzoho.crm import BASE_URL, API_PATH, SCOPE, ENVIRON_AUTH_TOKEN
-from talkzoho.crm.utils import select_columns, unwrap_items
+from talkzoho.support import BASE_URL, API_PATH, ENVIRON_AUTH_TOKEN
+from talkzoho.support.utils import select_columns, unwrap_items
 
 
-async def get_module(module,
-                     *,
-                     auth_token=None,
-                     region=US,
-                     columns=None,
-                     id):
+async def get_account(module,
+                      *,
+                      auth_token=None,
+                      region=US,
+                      columns=None,
+                      portal_id,
+                      department,
+                      id):
     client   = AsyncHTTPClient()
     path     = API_PATH + '/' + module + '/getRecordById'
     endpoint = create_url(BASE_URL, tld=region, path=path)
     query    = urlencode({
         'id': id,
-        'scope': SCOPE,
-        'version': 2,
-        'newFormat': 2,
         'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN),
-        'selectColumns': select_columns(module, columns)})
+        'portal': portal_id,
+        'department': department,
+        'selectfields': select_columns(module, columns)})
 
     url      = endpoint + '?' + query
     response = await client.fetch(url, method='GET')

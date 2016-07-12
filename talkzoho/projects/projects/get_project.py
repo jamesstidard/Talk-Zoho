@@ -14,6 +14,7 @@ from talkzoho.projects.utils import unwrap_items
 async def get_project(*,
                       auth_token=None,
                       region=US,
+                      columns=None,
                       portal_id,
                       id):
     query = urlencode({
@@ -27,4 +28,4 @@ async def get_project(*,
     response = await client.fetch(url, method='GET')
     body     = json_decode(response.body.decode("utf-8"))
 
-    return unwrap_items(body, single_item=True)
+    return unwrap_items(body, single_item=True, columns=columns)

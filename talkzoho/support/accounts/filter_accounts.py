@@ -10,20 +10,23 @@ from tornado.web import HTTPError
 
 from talkzoho.utils import create_url
 from talkzoho.regions import US
-from talkzoho.projects import BASE_URL, API_PATH, ENVIRON_AUTH_TOKEN, MAX_PAGE_SIZE  # noqa
-from talkzoho.projects.utils import unwrap_items
+from talkzoho.support.utils import select_columns, unwrap_items
+from talkzoho.support import \
+    BASE_URL, API_PATH, ENVIRON_AUTH_TOKEN, MAX_PAGE_SIZE, SCOPE
+from talkzoho.support.accounts import MODULE
 
 
-async def filter_projects(*,
+async def filter_accounts(*,
                           auth_token=None,
                           term=None,
                           region=US,
                           columns=None,
                           offset=0,
                           limit=None,
-                          portal_id):
+                          portal_id,
+                          department):
     client   = AsyncHTTPClient()
-    path     = API_PATH + '/portal/' + portal_id + '/projects/'
+    path     = API_PATH + '/' + MODULE + '/getrecords'
     endpoint = create_url(BASE_URL, tld=region, path=path)
 
     if limit == 0:
@@ -40,25 +43,32 @@ async def filter_projects(*,
 
     # Loop until we reach index we need, unless their is a search term.
     # If search term we need all records.
-    while paging:
+    while paging and (from_index < to_index or term):
         query = urlencode({
             'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN),
-            'index': from_index + 1,  # Zoho indexes at one not zero,
-            'range': batch_size})
+            'portal': portal_id,
+            'department': department,
+            'selectfields': select_columns(MODULE, columns),
+            'fromindex': from_index + 1,  # Zoho indexes at one not zero
+            'toindex': to_index + 1})
 
-        url           = endpoint + '?' + query
-        response      = await client.fetch(url, method='GET')
-        reached_limit = limit and to_index + 1 >= limit
+        url      = endpoint + '?' + query
+        response = await client.fetch(url, method='GET')
+        body     = json_decode(response.body.decode("utf-8"))
 
-        if response.code == 204 or (term is None and reached_limit):
-            break
-
-        body  = json_decode(response.body.decode("utf-8"))
-        items = unwrap_items(body, columns=columns)
-
-        results   += items
-        from_index = to_index + 1
-        to_index  += batch_size
+        try:
+            items = unwrap_items(body)
+        except HTTPError as http_error:
+            # if paging and hit end suppress error
+            # unless first request caused the 404
+            if http_error.status_code == 404 and from_index != offset:
+                paging = False
+            else:
+                raise
+        else:
+            results   += items
+            from_index = to_index + 1
+            to_index  += batch_size
 
     def fuzzy_score(resource):
         values = [str(v) for v in resource.values() if v]

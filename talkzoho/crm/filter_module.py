@@ -23,9 +23,6 @@ async def filter_module(module,
                         columns=None,
                         offset=0,
                         limit=None):
-    if columns is None:
-        columns = []
-
     client   = AsyncHTTPClient()
     path     = API_PATH + '/' + module + '/getRecords'
     endpoint = create_url(BASE_URL, tld=region, path=path)
@@ -52,7 +49,7 @@ async def filter_module(module,
             'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN),
             'fromIndex': from_index + 1,  # Zoho indexes at one not zero
             'toIndex': to_index + 1,
-            'selectColumns': select_columns(module, *columns)})
+            'selectColumns': select_columns(module, columns)})
 
         url      = endpoint + '?' + query
         response = await client.fetch(url, method='GET')
