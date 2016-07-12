@@ -24,7 +24,7 @@ async def get_account(*,
                       department,
                       id):
     client   = AsyncHTTPClient()
-    path     = API_PATH + '/' + MODULE + '/getRecordById'
+    path     = API_PATH + '/' + MODULE + '/getrecordsbyid'
     endpoint = create_url(BASE_URL, tld=region, path=path)
     query    = {
         'id': id,
@@ -36,6 +36,7 @@ async def get_account(*,
         query['selectfields'] = select_columns(MODULE, columns)
 
     url      = endpoint + '?' + urlencode(query)
+    print(url)
     response = await client.fetch(url, method='GET')
     body     = json_decode(response.body.decode("utf-8"))
 
