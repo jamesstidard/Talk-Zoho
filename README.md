@@ -1,5 +1,5 @@
 # Talk-Zoho 
-[![Build Status](https://travis-ci.org/i-Dynamics/Talk-Zoho.svg?branch=master)](https://travis-ci.org/i-Dynamics/Talk-Zoho)
+[![Build Status](https://travis-ci.org/i-Dynamics/Talk-Zoho.svg?branch=master)](https://travis-ci.org/i-Dynamics/Talk-Zoho)[![Coverage Status](https://coveralls.io/repos/github/i-Dynamics/Talk-Zoho/badge.svg)](https://coveralls.io/github/i-Dynamics/Talk-Zoho)
 
 A python wrapper library for Zoho API calls which aims to unify the API for the different Zoho Products (CRM, Support, Projects etc).
 
