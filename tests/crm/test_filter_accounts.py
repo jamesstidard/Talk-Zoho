@@ -52,8 +52,8 @@ def test_search_term(auth_token):
         auth_token=auth_token,
         region=EU,
         limit=1,
-        term='IFP')
-    assert account['Account Name'] == 'IFPL'
+        term='Orbital Foods')
+    assert account['Account Name'] == 'Orbital Foods Limited'
 
 
 @pytest.mark.gen_test
