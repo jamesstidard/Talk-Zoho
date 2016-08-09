@@ -22,7 +22,7 @@ async def get_price_book(*,
                          organization_id,
                          id):
     client   = AsyncHTTPClient()
-    path     = API_PATH + '/' + RESOURCE + '/' + id
+    path     = API_PATH + '/' + RESOURCE + '/' + str(id)
     endpoint = create_url(BASE_URL, tld=region, path=path)
     url      = endpoint + '?' + urlencode({
         'organization_id': organization_id,
