@@ -15,19 +15,18 @@ from talkzoho.utils import create_url
 
 from talkzoho.books import BASE_URL, API_PATH, SCOPE, MAX_PAGE_SIZE, ENVIRON_AUTH_TOKEN
 
-RESOURCE = 'pricebooks'
 
-
-async def filter_price_lists(*,
-                             auth_token=None,
-                             organization_id=None,
-                             term=None,
-                             region=US,
-                             columns=None,
-                             offset=0,
-                             limit=None):
+async def filter_module(module,
+                        *,
+                        auth_token=None,
+                        organization_id=None,
+                        term=None,
+                        region=US,
+                        columns=None,
+                        offset=0,
+                        limit=None):
     client   = AsyncHTTPClient()
-    path     = API_PATH + '/' + RESOURCE
+    path     = API_PATH + '/' + module
     endpoint = create_url(BASE_URL, tld=region, path=path)
 
     if limit == 0:
@@ -44,14 +43,12 @@ async def filter_price_lists(*,
     # Loop until we reach index we need, unless their is a search term.
     # If search term we need all records.
     while paging and (term or not limit or len(results) < limit):
-        query = urlencode({
+        url = endpoint + '?' + urlencode({
             'scope': SCOPE,
             'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN),
             'organization_id': organization_id,
             'per_page': batch_size,
             'page': page_index})
-
-        url = endpoint + '?' + query
 
         try:
             response = await client.fetch(url, method='GET')
@@ -62,7 +59,7 @@ async def filter_price_lists(*,
             raise HTTPError(http_code, reason=message)
         else:
             response    = json_decode(response.body.decode("utf-8"))
-            results    += response[RESOURCE]
+            results    += response[module]
             page_index += 1
             paging      = response['page_context']['has_more_page']
 

@@ -6,4 +6,5 @@ MAX_PAGE_SIZE       = 200
 REQUESTS_PER_SECOND = 2.5
 
 
-from .filter_price_lists import filter_price_lists  # noqa
+from .price_lists.filter_price_lists import filter_price_lists  # noqa
+from .items.filter_items import filter_items  # noqa
