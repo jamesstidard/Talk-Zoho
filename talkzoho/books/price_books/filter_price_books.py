@@ -5,7 +5,7 @@ from talkzoho.books.filter_module import filter_module
 RESOURCE = 'pricebooks'
 
 
-async def filter_price_lists(*,
+async def filter_price_books(*,
                              auth_token=None,
                              organization_id=None,
                              term=None,

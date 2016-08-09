@@ -11,3 +11,8 @@ def auth_token(scope="session"):
 @pytest.fixture
 def organization_id(scope='session'):
     return '20000146105'
+
+
+@pytest.fixture
+def price_book_id(scope="session"):
+    return "39000000244369"
