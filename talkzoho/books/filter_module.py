@@ -64,7 +64,7 @@ async def filter_module(module,
             paging      = response['page_context']['has_more_page']
 
     def fuzzy_score(price_list):
-        values = [str(v) for v in price_list.values() if v]
+        values = [str(v).lower() for v in price_list.values() if v]
         target = ' '.join(values)
         return fuzz.partial_ratio(term, target)
 

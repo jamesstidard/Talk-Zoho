@@ -72,7 +72,7 @@ async def filter_module(module,
             to_index  += batch_size
 
     def fuzzy_score(resource):
-        values = [str(v) for v in resource.values() if v]
+        values = [str(v).lower() for v in resource.values() if v]
         target = ' '.join(values)
         return fuzz.partial_ratio(term, target)
 
