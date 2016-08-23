@@ -1,6 +1,6 @@
 from talkzoho.regions import US
 from talkzoho.crm.get_module import get_module
-from talkzoho.crm.accounts import MODULE
+from talkzoho.crm.contacts import MODULE
 
 
 async def get_contact(*,
