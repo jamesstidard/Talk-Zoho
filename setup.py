@@ -5,7 +5,7 @@ from pip.req import parse_requirements as parse
 
 setup(
     name='talkzoho',
-    version='0.4.dev2',
+    version='0.5',
     url='https://github.com/A2Z-Cloud/Talk-Zoho',
     packages=find_packages(exclude=('tests', 'tests.*')),
     long_description=open('README.md').read(),
