@@ -5,16 +5,41 @@ def select_columns(resource, columns):
     return resource.lower() + '(' + ','.join(columns) + ')' if columns else ''
 
 
+def record_to_xml_data(record: dict):
+    lines = ['<FL val="{}"><![CDATA[{}]]></FL>'.format(k, v)
+             for k, v in record.items()]
+
+    return ''.join(lines)
+
+
+def wrap_items(items, module_name: str):
+    if type(items) is not list:
+        items = [items]
+
+    rows = ['<row no="{}">{}</row>'.format(index + 1, record_to_xml_data(item))
+            for index, item in enumerate(items)]
+
+    return '<{module_name}>{rows}</{module_name}>'.format(
+        module_name=module_name,
+        rows=''.join(rows))
+
+
 def unwrap_items(response, single_item=False):
     try:
         result   = response['response']['result']
 
-        # Dont know the resource name but should be the only key
-        assert len(result) == 1
-        resource = list(result.values())[0]
+        if len(result) == 1:
+            # Don't know the resource name but should be the only key
+            resource = list(result.values())[0]
+            rows     = resource['row']
+        elif len(result) == 2:
+            # On update message returns two keys message and record
+            single_item = True
+            rows        = result['recorddetail']
+        else:
+            raise ValueError('Unexpected looking response.')
 
         # wrap single resource results in array
-        rows  = resource['row']
         items = rows if isinstance(rows, list) else [rows]
 
         if single_item and len(items) != 1:

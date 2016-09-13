@@ -2,10 +2,7 @@ import os
 
 from urllib.parse import urlencode
 
-from fuzzywuzzy import fuzz
-
 from tornado.httpclient import AsyncHTTPClient
-from tornado.web import HTTPError
 from tornado.escape import json_decode
 
 from talkzoho.regions import US
