@@ -12,7 +12,7 @@ from talkzoho.crm import BASE_URL, API_PATH, SCOPE, ENVIRON_AUTH_TOKEN
 from talkzoho.crm.utils import wrap_items, unwrap_items
 
 
-async def insert_module(module,
+async def update_module(module,
                         record: dict,
                         *,
                         auth_token=None,
