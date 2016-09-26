@@ -57,7 +57,7 @@ async def filter_records(module: str,
 
         url      = endpoint + '?' + urlencode(query)
         response = await client.fetch(url, method='GET')
-        body     = json_decode(response.body.decode("utf-8"))
+        body     = json_decode(response.body.decode('utf-8'))
 
         try:
             items = unwrap_items(body)
