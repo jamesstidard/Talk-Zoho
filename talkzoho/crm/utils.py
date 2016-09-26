@@ -48,7 +48,7 @@ def unwrap_items(response, single_item=False):
         items = [translate_item(i) for i in items]
         return items[0] if single_item else items
     except (AssertionError, KeyError):
-        unwrap_error(response)
+        return unwrap_error(response)
 
 
 def unwrap_error(zoho_error):
