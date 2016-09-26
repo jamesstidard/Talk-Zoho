@@ -39,7 +39,7 @@ async def update_record(module: str,
         'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN)}
 
     url      = endpoint + '?' + urlencode(query)
-    response = await client.fetch(url, method='POST', allow_nonstandard_methods=True)
+    response = await client.fetch(url, method='POST', allow_nonstandard_methods=True)  # noqa
     body     = json_decode(response.body.decode("utf-8"))
 
     return unwrap_items(body, single_item=True)['Id']
