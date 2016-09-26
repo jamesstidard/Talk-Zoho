@@ -1,6 +1,6 @@
 import os
 
-from typing import Union, Optional
+from typing import Optional
 
 from urllib.parse import urlencode
 
