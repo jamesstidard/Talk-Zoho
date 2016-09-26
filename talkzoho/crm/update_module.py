@@ -19,13 +19,13 @@ async def insert_module(module,
                         region=US,
                         trigger_workflow: bool=True):
     client     = AsyncHTTPClient()
-    path       = API_PATH + '/' + module + '/insertRecords'
+    path       = API_PATH + '/' + module + '/updateRecords'
     endpoint   = create_url(BASE_URL, tld=region, path=path)
     xml_record = wrap_items(record, module_name=module)
 
     query = {
         'scope': SCOPE,
-        'version': 2,
+        'version': 4,
         'newFormat': 2,
         'duplicateCheck': 1,
         'wfTrigger': str(trigger_workflow).lower(),
