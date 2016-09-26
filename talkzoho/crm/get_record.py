@@ -1,5 +1,7 @@
 import os
 
+from typing import Optional, Union
+
 from urllib.parse import urlencode
 
 from tornado.httpclient import AsyncHTTPClient
@@ -12,12 +14,12 @@ from talkzoho.crm import BASE_URL, API_PATH, SCOPE, ENVIRON_AUTH_TOKEN
 from talkzoho.crm.utils import select_columns, unwrap_items
 
 
-async def get_module(module,
+async def get_record(module: str,
                      *,
-                     auth_token=None,
-                     region=US,
-                     columns=None,
-                     id):
+                     auth_token: Optional[str]=None,
+                     region: str=US,
+                     columns: Optional[list]=None,
+                     id: Union[int, str]):
     client   = AsyncHTTPClient()
     path     = API_PATH + '/' + module + '/getRecordById'
     endpoint = create_url(BASE_URL, tld=region, path=path)

@@ -1,5 +1,7 @@
 import os
 
+from typing import Optional
+
 from urllib.parse import urlencode
 
 from fuzzywuzzy import fuzz
@@ -15,14 +17,14 @@ from talkzoho.crm import BASE_URL, API_PATH, SCOPE, MAX_PAGE_SIZE, ENVIRON_AUTH_
 from talkzoho.crm.utils import select_columns, unwrap_items
 
 
-async def filter_module(module,
-                        *,
-                        auth_token=None,
-                        term=None,
-                        region=US,
-                        columns=None,
-                        offset=0,
-                        limit=None):
+async def filter_records(module: str,
+                         *,
+                         auth_token: Optional[str]=None,
+                         term: Optional[str]=None,
+                         region: str=US,
+                         columns: Optional[list]=None,
+                         offset: int=0,
+                         limit: Optional[int]=None):
     client   = AsyncHTTPClient()
     path     = API_PATH + '/' + module + '/getRecords'
     endpoint = create_url(BASE_URL, tld=region, path=path)

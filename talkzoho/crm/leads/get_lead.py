@@ -1,5 +1,5 @@
 from talkzoho.regions import US
-from talkzoho.crm.get_module import get_module
+from talkzoho.crm.get_record import get_record
 from talkzoho.crm.accounts import MODULE
 
 
@@ -8,7 +8,7 @@ async def get_lead(*,
                    region=US,
                    columns=None,
                    id):
-    return await get_module(
+    return await get_record(
         MODULE,
         auth_token=auth_token,
         region=region,

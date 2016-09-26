@@ -1,5 +1,7 @@
 import os
 
+from typing import Union, Optional
+
 from urllib.parse import urlencode
 
 from tornado.httpclient import AsyncHTTPClient
@@ -12,21 +14,33 @@ from talkzoho.crm import BASE_URL, API_PATH, SCOPE, ENVIRON_AUTH_TOKEN
 from talkzoho.crm.utils import wrap_items, unwrap_items
 
 
-async def insert_module(module,
-                        record: dict,
-                        *,
-                        primary_field: str,
-                        auth_token=None,
-                        region=US,
-                        trigger_workflow: bool=True):
+async def update_records(module: str,
+                         records: Union[dict, list],
+                         *,
+                         primary_field: str,
+                         auth_token: Optional[str]=None,
+                         region: str=US,
+                         trigger_workflow: bool=True):
     client     = AsyncHTTPClient()
-    path       = API_PATH + '/' + module + '/insertRecords'
+    path       = API_PATH + '/' + module + '/updateRecords'
     endpoint   = create_url(BASE_URL, tld=region, path=path)
-    xml_record = wrap_items(record, module_name=module, primary_field=primary_field)  # noqa
+
+    # on update zoho requires Id instead of normal id name e.g. CONTACTID
+    # TODO: test required and CONTACTID can't be used
+    if type(records) is not list:
+        records = [records]
+    for r in records:
+        if primary_field in r:
+            r['Id'] = r.pop(primary_field)
+
+    xml_record = wrap_items(
+        records,
+        module_name=module,
+        primary_field='Id')
 
     query = {
         'scope': SCOPE,
-        'version': 2,
+        'version': 4,
         'newFormat': 2,
         'duplicateCheck': 1,
         'wfTrigger': str(trigger_workflow).lower(),

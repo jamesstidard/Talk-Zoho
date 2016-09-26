@@ -21,6 +21,7 @@ def record_to_xml_data(record: dict, *, primary_field: str):
     return ''.join(lines)
 
 
+# TODO: check primary field is really needed (CDATA encoded record id)
 def wrap_items(items, *, module_name: str, primary_field: str):
     if type(items) is not list:
         items = [items]

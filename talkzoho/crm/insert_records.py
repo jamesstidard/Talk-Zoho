@@ -1,5 +1,7 @@
 import os
 
+from typing import Union, Optional
+
 from urllib.parse import urlencode
 
 from tornado.httpclient import AsyncHTTPClient
@@ -12,34 +14,21 @@ from talkzoho.crm import BASE_URL, API_PATH, SCOPE, ENVIRON_AUTH_TOKEN
 from talkzoho.crm.utils import wrap_items, unwrap_items
 
 
-async def update_module(module,
-                        record: dict,
-                        *,
-                        primary_field: str,
-                        auth_token=None,
-                        region=US,
-                        trigger_workflow: bool=True):
+async def insert_records(module: str,
+                         records: Union[dict, list],
+                         *,
+                         primary_field: str,
+                         auth_token: Optional[str]=None,
+                         region: str=US,
+                         trigger_workflow: bool=True):
     client     = AsyncHTTPClient()
-    path       = API_PATH + '/' + module + '/updateRecords'
+    path       = API_PATH + '/' + module + '/insertRecords'
     endpoint   = create_url(BASE_URL, tld=region, path=path)
-
-    # on update zoho requires Id instead of normal id name e.g. CONTACTID
-    if type(record) is not list:
-        record = [record]
-    for r in record:
-        for key, value in r.items():
-            if key == primary_field:
-                r['Id'] = value
-                del r[key]
-
-    xml_record = wrap_items(
-        record,
-        module_name=module,
-        primary_field='Id')
+    xml_record = wrap_items(records, module_name=module, primary_field=primary_field)  # noqa
 
     query = {
         'scope': SCOPE,
-        'version': 4,
+        'version': 2,
         'newFormat': 2,
         'duplicateCheck': 1,
         'wfTrigger': str(trigger_workflow).lower(),
@@ -50,4 +39,8 @@ async def update_module(module,
     response = await client.fetch(url, method='POST', allow_nonstandard_methods=True)
     body     = json_decode(response.body.decode("utf-8"))
 
-    return unwrap_items(body, single_item=True)['Id']
+    if type(records) is list:
+        results = unwrap_items(body, single_item=False)
+        return [r['Id'] for r in results]
+    else:
+        return unwrap_items(body, single_item=True)['Id']

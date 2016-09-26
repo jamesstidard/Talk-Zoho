@@ -1,5 +1,5 @@
 from talkzoho.regions import US
-from talkzoho.crm.filter_module import filter_module
+from talkzoho.crm.filter_records import filter_records
 from talkzoho.crm.accounts import MODULE
 
 
@@ -10,7 +10,7 @@ async def filter_accounts(*,
                           columns=None,
                           offset=0,
                           limit=None):
-    return await filter_module(
+    return await filter_records(
         MODULE,
         auth_token=auth_token,
         term=term,
