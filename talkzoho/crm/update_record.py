@@ -14,36 +14,27 @@ from talkzoho.crm import BASE_URL, API_PATH, SCOPE, ENVIRON_AUTH_TOKEN
 from talkzoho.crm.utils import wrap_items, unwrap_items
 
 
-async def update_records(module: str,
-                         records: Union[dict, list],
-                         *,
-                         primary_field: str,
-                         auth_token: Optional[str]=None,
-                         region: str=US,
-                         trigger_workflow: bool=True):
+async def update_record(module: str,
+                        record: dict,
+                        *,
+                        primary_key: str,
+                        auth_token: Optional[str]=None,
+                        region: str=US,
+                        trigger_workflow: bool=True):
     client     = AsyncHTTPClient()
     path       = API_PATH + '/' + module + '/updateRecords'
     endpoint   = create_url(BASE_URL, tld=region, path=path)
 
-    # on update zoho requires Id instead of normal id name e.g. CONTACTID
-    # TODO: test required and CONTACTID can't be used
-    if type(records) is not list:
-        records = [records]
-    for r in records:
-        if primary_field in r:
-            r['Id'] = r.pop(primary_field)
-
-    xml_record = wrap_items(
-        records,
-        module_name=module,
-        primary_field='Id')
+    id_        = record.pop(primary_key)
+    xml_record = wrap_items(record, module_name=module)
 
     query = {
         'scope': SCOPE,
-        'version': 4,
+        'version': 2,
         'newFormat': 2,
         'duplicateCheck': 1,
         'wfTrigger': str(trigger_workflow).lower(),
+        'id': id_,
         'xmlData': xml_record,
         'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN)}
 

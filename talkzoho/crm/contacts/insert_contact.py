@@ -1,15 +1,14 @@
 from talkzoho.regions import US
-from talkzoho.crm.update_record import update_record
-from talkzoho.crm.contacts import MODULE, PRIMARY_KEY
+from talkzoho.crm.insert_record import insert_record
+from talkzoho.crm.contacts import MODULE
 
 
-async def update_contact(record,
+async def insert_contact(record,
                          *,
                          auth_token=None,
                          region=US):
-    return await update_record(
+    return await insert_record(
         MODULE,
-        primary_key=PRIMARY_KEY,
         record=record,
         auth_token=auth_token,
         region=region)

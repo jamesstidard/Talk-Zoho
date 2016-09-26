@@ -5,28 +5,18 @@ def select_columns(resource, columns):
     return resource.lower() + '(' + ','.join(columns) + ')' if columns else ''
 
 
-def value_to_xml_data(value, *, is_primary_field: bool=False):
-    if is_primary_field:
-        return str(value)
-    else:
-        return '<![CDATA[{}]]>'.format(value)
-
-
-def record_to_xml_data(record: dict, *, primary_field: str):
-    record = {k: value_to_xml_data(v, is_primary_field=(k == primary_field))
-              for k, v in record.items()}
-    lines  = ['<FL val="{}">{}</FL>'.format(k, v)
+def record_to_xml_data(record: dict):
+    lines  = ['<FL val="{}"><![CDATA[{}]]></FL>'.format(k, v)
               for k, v in record.items()]
 
     return ''.join(lines)
 
 
-# TODO: check primary field is really needed (CDATA encoded record id)
-def wrap_items(items, *, module_name: str, primary_field: str):
+def wrap_items(items, *, module_name: str):
     if type(items) is not list:
         items = [items]
 
-    rows = ['<row no="{}">{}</row>'.format(index + 1, record_to_xml_data(item, primary_field=primary_field))  # noqa
+    rows = ['<row no="{}">{}</row>'.format(index + 1, record_to_xml_data(item))
             for index, item in enumerate(items)]
 
     return '<{module_name}>{rows}</{module_name}>'.format(

@@ -1,9 +1,9 @@
 from talkzoho.regions import US
 from talkzoho.crm.update_record import update_record
-from talkzoho.crm.contacts import MODULE, PRIMARY_KEY
+from talkzoho.crm.accounts import MODULE, PRIMARY_KEY
 
 
-async def update_contact(record,
+async def update_account(record,
                          *,
                          auth_token=None,
                          region=US):

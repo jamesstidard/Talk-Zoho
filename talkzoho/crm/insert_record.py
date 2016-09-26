@@ -14,17 +14,16 @@ from talkzoho.crm import BASE_URL, API_PATH, SCOPE, ENVIRON_AUTH_TOKEN
 from talkzoho.crm.utils import wrap_items, unwrap_items
 
 
-async def insert_records(module: str,
-                         records: Union[dict, list],
-                         *,
-                         primary_field: str,
-                         auth_token: Optional[str]=None,
-                         region: str=US,
-                         trigger_workflow: bool=True):
+async def insert_record(module: str,
+                        record: dict,
+                        *,
+                        auth_token: Optional[str]=None,
+                        region: str=US,
+                        trigger_workflow: bool=True):
     client     = AsyncHTTPClient()
     path       = API_PATH + '/' + module + '/insertRecords'
     endpoint   = create_url(BASE_URL, tld=region, path=path)
-    xml_record = wrap_items(records, module_name=module, primary_field=primary_field)  # noqa
+    xml_record = wrap_items(record, module_name=module)
 
     query = {
         'scope': SCOPE,
@@ -39,7 +38,7 @@ async def insert_records(module: str,
     response = await client.fetch(url, method='POST', allow_nonstandard_methods=True)
     body     = json_decode(response.body.decode("utf-8"))
 
-    if type(records) is list:
+    if type(record) is list:
         results = unwrap_items(body, single_item=False)
         return [r['Id'] for r in results]
     else:
