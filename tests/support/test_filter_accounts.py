@@ -54,7 +54,33 @@ def test_search_term(auth_token, portal, department):
         region=EU,
         portal=portal,
         limit=1,
-        term='IFP')
+        term='IFPL')
+    account = accounts[0]
+    assert account['Account Name'] == 'IFPL'
+
+
+@pytest.mark.gen_test
+def test_search_term_lower(auth_token, portal, department):
+    accounts = yield filter_accounts(
+        auth_token=auth_token,
+        department=department,
+        region=EU,
+        portal=portal,
+        limit=1,
+        term='ifpl')
+    account = accounts[0]
+    assert account['Account Name'] == 'IFPL'
+
+
+@pytest.mark.gen_test
+def test_search_term_partial(auth_token, portal, department):
+    accounts = yield filter_accounts(
+        auth_token=auth_token,
+        department=department,
+        region=EU,
+        portal=portal,
+        limit=1,
+        term='ifp')
     account = accounts[0]
     assert account['Account Name'] == 'IFPL'
 
