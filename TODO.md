@@ -1,1 +1,1 @@
-- [ ] Case in-sensitive fuzzywuzzy
+- [ ] Batch update/insert records
