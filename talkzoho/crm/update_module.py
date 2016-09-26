@@ -22,10 +22,20 @@ async def update_module(module,
     client     = AsyncHTTPClient()
     path       = API_PATH + '/' + module + '/updateRecords'
     endpoint   = create_url(BASE_URL, tld=region, path=path)
+
+    # on update zoho requires Id instead of normal id name e.g. CONTACTID
+    if type(record) is not list:
+        record = [record]
+    for r in record:
+        for key, value in r.items():
+            if key == primary_field:
+                r['Id'] = value
+                del r[key]
+
     xml_record = wrap_items(
         record,
         module_name=module,
-        primary_field=primary_field)
+        primary_field='Id')
 
     query = {
         'scope': SCOPE,
