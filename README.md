@@ -15,9 +15,22 @@ pip install talkzoho
 
 ## Example Usage
 ```python
-from talkzoho.crm import get_account
+from talkzoho.crm import get_account, insert_lead, filter_leads
 
-async def my_function():
+
+async def print_account_name():
     account = await get_account(id='7030050000019540342', auth_token='xxx')
     print(account['Account Name'])
+
+
+async def insert_lead():
+    bill_billson = {
+        'First Name': 'Bill',
+        'Last Name': 'Billson'}
+    lead_id = await insert_lead(bill_billson, auth_token='xxx')
+
+
+async def find_bill_billson():
+    bill_billson = await filter_leads(term='Bill Billson', limit=1, auth_token='xxx')
+
 ```

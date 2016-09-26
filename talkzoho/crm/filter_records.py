@@ -81,4 +81,7 @@ async def filter_records(module: str,
     if term:
         results = sorted(results, key=fuzzy_score, reverse=True)
 
-    return results[:limit]
+    if limit == 1:
+        return results[0]
+    else:
+        return results[:limit]
