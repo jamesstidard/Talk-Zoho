@@ -73,12 +73,11 @@ async def filter_accounts(*,
             to_index  += batch_size
 
     def fuzzy_score(resource):
-        values = [str(v).lower() for v in resource.values() if v]
+        values = [str(v) for v in resource.values() if v]
         target = ' '.join(values)
         return fuzz.partial_ratio(term, target)
 
     if term:
         results = sorted(results, key=fuzzy_score, reverse=True)
 
-    print(results)
     return results[:limit]
