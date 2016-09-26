@@ -23,22 +23,22 @@ async def print_account_name():
     print(account['Account Name'])
 
 
-async def insert_bill_billson_lead():
-    bill_billson = {
+async def insert_lead_bill():
+    bill = {
         'First Name': 'Bill',
         'Last Name': 'Billson'}
-    lead_id = await insert_lead(bill_billson, auth_token='xxx')
+    lead_id = await insert_lead(bill, auth_token='xxx')
 
 
-async def find_bill_billson_lead():
-    search_results = await filter_leads(term='Bill Billson', limit=1, auth_token='xxx')
-    bill_billson   = search_results[0]
+async def find_lead_bill():
+    results = await filter_leads(term='Bill Billson', limit=1, auth_token='xxx')
+    bill    = results[0]
 
 
-async def update_contact():
-    jill_jillson = {
+async def update_contact_jill():
+    jill = {
         'CONTACTID': '7030050000019540536',
         'First Name': 'Jill',
         'Last Name': 'Jillson'}
-    await update_contact(jill_jillson, auth_token='xxx')
+    contact_id = await update_contact(jill, auth_token='xxx')
 ```

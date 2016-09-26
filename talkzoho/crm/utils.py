@@ -61,6 +61,10 @@ def unwrap_error(zoho_error):
         _, error      = filtered.popitem()
         code, message = error['code'], error['message']
 
+        # 5000 code returned on successful deletion
+        if code == '5000':
+            return True
+
         status_code = http_status_code(zoho_code=code)
         raise HTTPError(status_code, reason=message)
     except (AssertionError, KeyError, IndexError):

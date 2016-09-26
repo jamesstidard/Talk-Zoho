@@ -28,3 +28,9 @@ from .contacts.update_contacts import update_contact  # noqa
 from .leads.update_lead import update_lead  # noqa
 from .potentials.update_potential import update_potential  # noqa
 from .update_record import update_record  # noqa
+
+from .accounts.delete_account import delete_account  # noqa
+# from .contacts.delete_contacts import delete_contact  # noqa
+from .leads.delete_lead import delete_lead  # noqa
+# from .potentials.delete_potential import delete_potential  # noqa
+from .delete_record import delete_record  # noqa
