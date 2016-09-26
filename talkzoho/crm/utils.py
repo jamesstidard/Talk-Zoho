@@ -25,7 +25,7 @@ def wrap_items(items, *, module_name: str, primary_field: str):
     if type(items) is not list:
         items = [items]
 
-    rows = ['<row no="{row_number}">{record}</row>'.format(index + 1, record_to_xml_data(item, primary_field=primary_field))  # noqa
+    rows = ['<row no="{}">{}</row>'.format(index + 1, record_to_xml_data(item, primary_field=primary_field))  # noqa
             for index, item in enumerate(items)]
 
     return '<{module_name}>{rows}</{module_name}>'.format(
