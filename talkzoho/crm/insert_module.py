@@ -15,13 +15,14 @@ from talkzoho.crm.utils import wrap_items, unwrap_items
 async def insert_module(module,
                         record: dict,
                         *,
+                        primary_field: str,
                         auth_token=None,
                         region=US,
                         trigger_workflow: bool=True):
     client     = AsyncHTTPClient()
     path       = API_PATH + '/' + module + '/insertRecords'
     endpoint   = create_url(BASE_URL, tld=region, path=path)
-    xml_record = wrap_items(record, module_name=module)
+    xml_record = wrap_items(record, module_name=module, primary_field=primary_field)  # noqa
 
     query = {
         'scope': SCOPE,

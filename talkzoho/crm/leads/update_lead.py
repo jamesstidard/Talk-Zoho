@@ -1,6 +1,6 @@
 from talkzoho.regions import US
 from talkzoho.crm.update_module import update_module
-from talkzoho.crm.leads import MODULE
+from talkzoho.crm.leads import MODULE, PRIMARY_FIELD
 
 
 async def update_lead(record,
@@ -9,6 +9,7 @@ async def update_lead(record,
                            region=US):
     return await update_module(
         MODULE,
+        primary_field=PRIMARY_FIELD,
         record=record,
         auth_token=auth_token,
         region=region)

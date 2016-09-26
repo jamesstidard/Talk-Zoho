@@ -1,1 +1,2 @@
 MODULE = 'Leads'
+PRIMARY_FIELD = 'LEADID'

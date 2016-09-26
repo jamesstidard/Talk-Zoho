@@ -1,1 +1,2 @@
 MODULE = 'Contacts'
+PRIMARY_FIELD = 'CONTACTID'
