@@ -42,3 +42,18 @@ async def update_contact_jill():
         'Last Name': 'Jillson'}
     contact_id = await update_contact(jill, auth_token='xxx')
 ```
+
+## Error Handling
+Zoho use a number of ways to inform the client of errors. For example, CRM always returns a 200 status code with a error message and code in the body, where as books will return more standard looking HTTP errors. Talk Zoho trys to unify these and raises a `tornado.web.HTTPError`. Talk Zoho will also map the Zoho specific codes to their HTTP status code equivalent.
+```python
+from tornado.web import HTTPError
+
+async def print_account_name():
+    try:
+        account = await get_account(id='1234', auth_token='xxx')
+    except HTTPError as http_error:
+        # HTTPError(404, reason='No record available with the specified record ID.')
+        print(http_error)
+    else:
+        print(account['Account Name'])
+```
