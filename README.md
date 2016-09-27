@@ -41,10 +41,16 @@ async def update_contact_jill():
         'First Name': 'Jill',
         'Last Name': 'Jillson'}
     contact_id = await update_contact(jill, auth_token='xxx')
+
+
+async def delete_contact_jill():
+    contact_id = await delete_contact(id='7030050000019540536', auth_token='xxx')
 ```
 
 ## Error Handling
 Zoho use a number of ways to inform the client of errors. For example, CRM always returns a 200 status code with a error message and code in the body, where as books will return more standard looking HTTP errors. Talk Zoho tries to unify these and raises a `tornado.web.HTTPError`. Talk Zoho will also map the Zoho specific codes to their HTTP status code equivalent.
+
+NOTE: Deleting a CRM record (with a correct-looking id) will never return an error.This is the behavior of Zoho's CRM API.
 ```python
 from tornado.web import HTTPError
 
