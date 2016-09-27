@@ -44,7 +44,7 @@ async def update_contact_jill():
 ```
 
 ## Error Handling
-Zoho use a number of ways to inform the client of errors. For example, CRM always returns a 200 status code with a error message and code in the body, where as books will return more standard looking HTTP errors. Talk Zoho trys to unify these and raises a `tornado.web.HTTPError`. Talk Zoho will also map the Zoho specific codes to their HTTP status code equivalent.
+Zoho use a number of ways to inform the client of errors. For example, CRM always returns a 200 status code with a error message and code in the body, where as books will return more standard looking HTTP errors. Talk Zoho tries to unify these and raises a `tornado.web.HTTPError`. Talk Zoho will also map the Zoho specific codes to their HTTP status code equivalent.
 ```python
 from tornado.web import HTTPError
 
