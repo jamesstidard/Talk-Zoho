@@ -44,7 +44,7 @@ async def update_contact_jill():
 
 
 async def delete_contact_jill():
-    contact_id = await crm.delete_contact(id='7030050000019540536', auth_token='xxx')
+    success = await crm.delete_contact(id='7030050000019540536', auth_token='xxx')
 ```
 
 ## Error Handling
