@@ -4,7 +4,7 @@ A python wrapper library for Zoho API calls which aims to unify the API for the 
 
 The library is written using asynchronous interface i.e.
 ```python
-async def get_potential():
+async def support.get_accounts():
     pass
 ```  
 
