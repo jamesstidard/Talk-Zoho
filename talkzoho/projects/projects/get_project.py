@@ -6,7 +6,6 @@ from talkzoho.projects.projects import MODULE
 
 async def get_project(*,
                       id,
-                      module,
                       portal_id,
                       auth_token=None,
                       region=US,
