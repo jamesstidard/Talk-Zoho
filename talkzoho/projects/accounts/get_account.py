@@ -10,7 +10,7 @@ async def get_account(*,
                       auth_token=None,
                       region=US,
                       columns=None):
-    return get_record(
+    return await get_record(
         id=id,
         module=MODULE,
         portal_id=portal_id,
