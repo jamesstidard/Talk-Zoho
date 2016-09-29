@@ -15,12 +15,11 @@ pip install talkzoho
 
 ## Example Usage
 ```python
-from talkzoho.crm import \
-    get_account, insert_lead, filter_leads, update_contact, delete_contact
+from talkzoho import crm
 
 
 async def print_account_name():
-    account = await get_account(id='7030050000019540342', auth_token='xxx')
+    account = await crm.get_account(id='7030050000019540342', auth_token='xxx')
     print(account['Account Name'])
 
 
@@ -28,11 +27,11 @@ async def insert_lead_bill():
     bill = {
         'First Name': 'Bill',
         'Last Name': 'Billson'}
-    lead_id = await insert_lead(bill, auth_token='xxx')
+    lead_id = await crm.insert_lead(bill, auth_token='xxx')
 
 
 async def find_lead_bill():
-    results = await filter_leads(term='Bill Billson', limit=1, auth_token='xxx')
+    results = await crm.filter_leads(term='Bill Billson', limit=1, auth_token='xxx')
     bill    = results[0]
 
 
@@ -41,11 +40,11 @@ async def update_contact_jill():
         'CONTACTID': '7030050000019540536',
         'First Name': 'Jill',
         'Last Name': 'Jillson'}
-    contact_id = await update_contact(jill, auth_token='xxx')
+    contact_id = await crm.update_contact(jill, auth_token='xxx')
 
 
 async def delete_contact_jill():
-    contact_id = await delete_contact(id='7030050000019540536', auth_token='xxx')
+    contact_id = await crm.delete_contact(id='7030050000019540536', auth_token='xxx')
 ```
 
 ## Error Handling
@@ -53,11 +52,13 @@ Zoho use a number of ways to inform the client of errors. For example, CRM alway
 
 NOTE: Deleting a CRM record (with a correct-looking id) will never return an error.This is the behavior of Zoho's CRM API.
 ```python
+from talkzoho import crm
 from tornado.web import HTTPError
+
 
 async def print_account_name():
     try:
-        account = await get_account(id='1234', auth_token='xxx')
+        account = await crm.get_account(id='1234', auth_token='xxx')
     except HTTPError as http_error:
         # HTTPError(404, reason='No record available with the specified record ID.')
         print(http_error)
