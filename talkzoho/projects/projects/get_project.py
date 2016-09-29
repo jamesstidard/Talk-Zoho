@@ -12,7 +12,7 @@ async def get_project(*,
                       columns=None):
     return get_record(
         id=id,
-        moudle=MODULE,
+        module=MODULE,
         portal_id=portal_id,
         auth_token=auth_token,
         region=region,
