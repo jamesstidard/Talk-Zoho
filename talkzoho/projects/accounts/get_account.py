@@ -1,10 +1,10 @@
 from talkzoho.regions import US
 from talkzoho.projects.get_record import get_record
 
-from talkzoho.projects.projects import MODULE
+from talkzoho.projects.accounts import MODULE
 
 
-async def get_project(*,
+async def get_account(*,
                       id,
                       module,
                       portal_id,
