@@ -10,7 +10,3 @@ script: make test
 notifications:
   email: false
 after_success: coveralls
-addons:
-  apt:
-    packages:
-      - pandoc
