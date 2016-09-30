@@ -1,14 +1,18 @@
 from setuptools import setup
 from setuptools import find_packages
 
-from pypandoc import convert_file
+try:
+    from pypandoc import convert_file
+    long_description = convert_file('README.md', 'rst')
+except ImportError:
+    long_description = open('README.md').read()
 
 
 setup(
     name='talkzoho',
     version='0.9.6',
     description='Asynchronous wrapper for Zoho\'s numerous APIs',
-    long_description=convert_file('README.md', 'rst'),
+    long_description=long_description,
     url='https://github.com/A2Z-Cloud/Talk-Zoho',
     packages=find_packages(exclude=('tests', 'tests.*')),
     author='James Stidard',
