@@ -74,8 +74,8 @@ def unwrap_error(zoho_error):
         _, error      = filtered.popitem()
         code, message = error['code'], error['message']
 
-        # 5000 code returned on successful deletion
-        if code == '5000':
+        # codes returned on successful deletion of file/record
+        if code in ['4800', '5000']:
             return True
 
         status_code = http_status_code(zoho_code=code)
@@ -99,6 +99,8 @@ def http_status_code(*, zoho_code):  # pragma: no cover
         return 404  # not found
     elif zoho_code in []:
         return 405  # method not allowed
+    elif zoho_code in ['4814']:
+        return 409  # conflict
     elif zoho_code in ["4807"]:
         return 413  # payload too large
     elif zoho_code in ["4424"]:

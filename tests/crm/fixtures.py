@@ -26,3 +26,8 @@ def contact_id(scope="session"):
 @pytest.fixture
 def eu_contact_id(scope="session"):
     return "1770000000501005"
+
+
+@pytest.fixture
+def file_url(scope="session"):
+    return "https://boardgamegeek.com/file/download/3qot5abcfi/Rules_Climbers02.pdf"  # noqa

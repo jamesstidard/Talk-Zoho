@@ -13,5 +13,4 @@ setup(
     install_requires=[
         'fuzzywuzzy',
         'python-Levenshtein',
-        'requests',
         'tornado'])
