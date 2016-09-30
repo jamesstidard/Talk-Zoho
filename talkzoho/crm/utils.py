@@ -8,6 +8,8 @@ def select_columns(resource, columns):
 def to_zoho_value(value):
     if value is None:
         return ''
+    elif isinstance(value, list):
+        return ';'.join(value)
     else:
         return value
 
