@@ -5,3 +5,4 @@ pytest-dotenv
 pytest-cov
 flake8
 setuptools-markdown
+pypandoc
