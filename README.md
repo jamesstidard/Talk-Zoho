@@ -4,9 +4,21 @@ A python wrapper library for Zoho API calls which aims to unify the API for the 
 
 The library is written using asynchronous interface i.e.
 ```python
-async def support.get_accounts():
-    pass
-```  
+from talkzoho import crm
+
+
+async def main():
+    account = await crm.get_account(id='7030050000019540342', auth_token='xxx')
+```
+
+However, Talk Zoho also provides the helper function `talkzoho.utils.wait` for usage in synchronous code.
+```python
+from talkzoho import crm
+from talkzoho.utils import wait
+
+
+account = wait(crm.get_account, id='7030050000019540342', auth_token='xxx')
+```
 
 ## Installation
 ```bash
