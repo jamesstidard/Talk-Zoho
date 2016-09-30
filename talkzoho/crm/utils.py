@@ -7,7 +7,7 @@ def select_columns(resource, columns):
 
 def to_zoho_value(value):
     if value is None:
-        value == ''
+        return ''
     else:
         return value
 
