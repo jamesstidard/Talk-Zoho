@@ -10,7 +10,7 @@ setup(
     packages=find_packages(exclude=('tests', 'tests.*')),
     author='James Stidard',
     author_email='james.stidard@a2zcloud.com',
-    keywords=['talkzoho', 'Zoho', 'async'],
+    keywords=['talkzoho', 'Zoho', 'async', 'tornado'],
     install_requires=[
         'fuzzywuzzy',
         'python-Levenshtein',
