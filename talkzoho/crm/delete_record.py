@@ -7,6 +7,7 @@ from urllib.parse import urlencode
 from tornado.httpclient import AsyncHTTPClient
 from tornado.escape import json_decode
 
+from talkzoho import logger
 from talkzoho.regions import US
 from talkzoho.utils import create_url
 
@@ -27,7 +28,9 @@ async def delete_record(module: str,
         'scope': SCOPE,
         'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN)}
 
-    url      = endpoint + '?' + urlencode(query)
+    url = endpoint + '?' + urlencode(query)
+
+    logger.info('DELETE: {}'.format(url))
     response = await client.fetch(url, method='GET')
     body     = json_decode(response.body.decode('utf-8'))
 

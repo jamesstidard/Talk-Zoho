@@ -10,6 +10,7 @@ from tornado.httpclient import AsyncHTTPClient
 from tornado.web import HTTPError
 from tornado.escape import json_decode
 
+from talkzoho import logger
 from talkzoho.regions import US
 from talkzoho.utils import create_url
 
@@ -55,7 +56,9 @@ async def filter_records(module: str,
         if columns:
             query['selectColumns'] = select_columns(module, columns)
 
-        url      = endpoint + '?' + urlencode(query)
+        url = endpoint + '?' + urlencode(query)
+
+        logger.info('GET: {}'.format(url))
         response = await client.fetch(url, method='GET')
         body     = json_decode(response.body.decode('utf-8'))
 

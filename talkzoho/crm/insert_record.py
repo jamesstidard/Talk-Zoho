@@ -7,6 +7,7 @@ from urllib.parse import urlencode
 from tornado.httpclient import AsyncHTTPClient
 from tornado.escape import json_decode
 
+from talkzoho import logger
 from talkzoho.regions import US
 from talkzoho.utils import create_url
 
@@ -34,6 +35,7 @@ async def insert_record(module: str,
         'xmlData': xml_record,
         'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN)})
 
+    logger.info('POST: {}, BODY: {}'.format(endpoint, body))
     response = await client.fetch(endpoint, method='POST', body=body)
     body     = json_decode(response.body.decode('utf-8'))
 
