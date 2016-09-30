@@ -30,32 +30,29 @@ pip install talkzoho
 from talkzoho import crm
 
 
-async def print_account_name():
+async def main():
+    # Get Account
     account = await crm.get_account(id='7030050000019540342', auth_token='xxx')
     print(account['Account Name'])
-
-
-async def insert_lead_bill():
+    
+    # Insert Lead
     bill = {
         'First Name': 'Bill',
         'Last Name': 'Billson'}
     lead_id = await crm.insert_lead(bill, auth_token='xxx')
 
-
-async def find_lead_bill():
+    # Filter Leads
     results = await crm.filter_leads(term='Bill Billson', limit=1, auth_token='xxx')
     bill    = results[0]
 
-
-async def update_contact_jill():
+    # Update Contact
     jill = {
         'CONTACTID': '7030050000019540536',
         'First Name': 'Jill',
         'Last Name': 'Jillson'}
     contact_id = await crm.update_contact(jill, auth_token='xxx')
 
-
-async def delete_contact_jill():
+    # Delete Contact
     success = await crm.delete_contact(id='7030050000019540536', auth_token='xxx')
 ```
 
@@ -68,7 +65,7 @@ from talkzoho import crm
 from tornado.web import HTTPError
 
 
-async def print_account_name():
+async def main():
     try:
         account = await crm.get_account(id='1234', auth_token='xxx')
     except HTTPError as http_error:
