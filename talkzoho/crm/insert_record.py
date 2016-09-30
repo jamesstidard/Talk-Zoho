@@ -1,6 +1,6 @@
 import os
 
-from typing import Union, Optional
+from typing import Optional
 
 from urllib.parse import urlencode
 
@@ -25,17 +25,16 @@ async def insert_record(module: str,
     endpoint   = create_url(BASE_URL, tld=region, path=path)
     xml_record = wrap_items(record, module_name=module)
 
-    query = {
+    body = urlencode({
         'scope': SCOPE,
         'version': 2,
         'newFormat': 2,
         'duplicateCheck': 1,
         'wfTrigger': str(trigger_workflow).lower(),
         'xmlData': xml_record,
-        'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN)}
+        'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN)})
 
-    url      = endpoint + '?' + urlencode(query)
-    response = await client.fetch(url, method='POST', allow_nonstandard_methods=True)  # noqa
+    response = await client.fetch(endpoint, method='POST', body=body)
     body     = json_decode(response.body.decode('utf-8'))
 
     if type(record) is list:

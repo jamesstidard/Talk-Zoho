@@ -28,7 +28,7 @@ async def update_record(module: str,
     id_        = record.pop(primary_key)
     xml_record = wrap_items(record, module_name=module)
 
-    query = {
+    body = urlencode({
         'scope': SCOPE,
         'version': 2,
         'newFormat': 2,
@@ -36,10 +36,9 @@ async def update_record(module: str,
         'wfTrigger': str(trigger_workflow).lower(),
         'id': id_,
         'xmlData': xml_record,
-        'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN)}
+        'authtoken': auth_token or os.getenv(ENVIRON_AUTH_TOKEN)})
 
-    url      = endpoint + '?' + urlencode(query)
-    response = await client.fetch(url, method='POST', allow_nonstandard_methods=True)  # noqa
+    response = await client.fetch(endpoint, method='POST', body=body)
     body     = json_decode(response.body.decode('utf-8'))
 
     return unwrap_items(body, single_item=True)['Id']

@@ -5,8 +5,15 @@ def select_columns(resource, columns):
     return resource.lower() + '(' + ','.join(columns) + ')' if columns else ''
 
 
+def to_zoho_value(value):
+    if value is None:
+        value == ''
+    else:
+        return value
+
+
 def record_to_xml_data(record: dict):
-    lines  = ['<FL val="{}"><![CDATA[{}]]></FL>'.format(k, v)
+    lines  = ['<FL val="{}"><![CDATA[{}]]></FL>'.format(k, to_zoho_value(v))
               for k, v in record.items()]
 
     return ''.join(lines)
