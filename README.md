@@ -33,7 +33,6 @@ from talkzoho import crm
 async def main():
     # Get Account
     account = await crm.get_account(id='7030050000019540342', auth_token='xxx')
-    print(account['Account Name'])
     
     # Insert Lead
     bill = {
@@ -42,8 +41,7 @@ async def main():
     lead_id = await crm.insert_lead(bill, auth_token='xxx')
 
     # Filter Leads
-    results = await crm.filter_leads(term='Bill Billson', limit=1, auth_token='xxx')
-    bill    = results[0]
+    bills = await crm.filter_leads(term='Bill', limit=1, auth_token='xxx')
 
     # Update Contact
     jill = {
@@ -71,6 +69,4 @@ async def main():
     except HTTPError as http_error:
         # HTTPError(404, reason='No record available with the specified record ID.')
         print(http_error)
-    else:
-        print(account['Account Name'])
 ```
