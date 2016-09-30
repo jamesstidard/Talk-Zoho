@@ -1,4 +1,7 @@
+from datetime import date, datetime
+
 from tornado.web import HTTPError
+
 
 
 def select_columns(resource, columns):
@@ -10,6 +13,8 @@ def to_zoho_value(value):
         return ''
     elif isinstance(value, list):
         return ';'.join(value)
+    elif isinstance(value, datetime) or isinstance(value, date):
+        return value.strftime('%Y-%m-%d %H:%M:%S')
     else:
         return value
 
