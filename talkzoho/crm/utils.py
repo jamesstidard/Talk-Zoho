@@ -3,7 +3,6 @@ from datetime import date, datetime
 from tornado.web import HTTPError
 
 
-
 def select_columns(resource, columns):
     return resource.lower() + '(' + ','.join(columns) + ')' if columns else ''
 
