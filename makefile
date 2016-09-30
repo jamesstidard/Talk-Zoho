@@ -1,5 +1,5 @@
 init:
-	pip install -r requirements/development.txt
+	pip install -r requirements/development.txt --no-cache-dir --upgrade
 test:
 	py.test --cov=talkzoho tests/
 test_fail:

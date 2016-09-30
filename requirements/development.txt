@@ -4,5 +4,4 @@ pytest-tornado
 pytest-dotenv
 pytest-cov
 flake8
-setuptools-markdown
-pypandoc
+pypandoc==1.2.0
