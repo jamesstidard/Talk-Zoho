@@ -3,5 +3,4 @@ pytest-tornado==0.4.5
 pytest-dotenv==0.1.0
 pytest-cov==2.3.1
 flake8==3.0.4
-setuptools-markdown==0.2
 -r production.txt
