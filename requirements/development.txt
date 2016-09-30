@@ -1,5 +1,5 @@
 -r production.txt
-pytest
+pytest==3.0.3
 pytest-tornado
 pytest-dotenv
 pytest-cov
