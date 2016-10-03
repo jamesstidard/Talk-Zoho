@@ -1,1 +1,4 @@
 - [ ] Batch update/insert records
+- [ ] Zoho Books
+- [ ] Zoho Support
+- [ ] Zoho Projects
