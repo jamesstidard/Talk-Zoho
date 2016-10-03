@@ -1,4 +1,5 @@
 - [ ] Batch update/insert records
+- [ ] Zoho CRM endpoints other then CRUD
 - [ ] Zoho Books
 - [ ] Zoho Support
 - [ ] Zoho Projects
