@@ -33,7 +33,7 @@ from talkzoho import crm
 async def main():
     # Get Account
     account = await crm.get_account(id='7030050000019540342', auth_token='xxx')
-    
+
     # Insert Lead
     bill = {
         'First Name': 'Bill',
@@ -55,7 +55,7 @@ async def main():
 ```
 
 ## Error Handling
-Zoho use a number of ways to inform the client of errors. For example, CRM always returns a 200 status code with a error message and code in the body, where as books will return more standard looking HTTP errors. Talk Zoho tries to unify these and raises a `tornado.web.HTTPError`. Talk Zoho will also map the Zoho specific codes to their HTTP status code equivalent.
+Zoho use a number of ways to inform the client of errors. For example, CRM always returns a 200 status code with a error message and code in the body, where as books will return more standard looking HTTP errors. Talk Zoho tries to unify these and raises a [`tornado.web.HTTPError`](http://www.tornadoweb.org/en/stable/web.html#tornado.web.HTTPError). Talk Zoho will also map the Zoho specific codes to their HTTP status code equivalent.
 
 NOTE: Deleting a CRM record (with a correct-looking id) will never return an error.This is the behavior of Zoho's CRM API.
 ```python
