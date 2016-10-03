@@ -10,7 +10,7 @@ except ImportError:
 
 setup(
     name='talkzoho',
-    version='0.9.6',
+    version='0.9.7',
     description='Asynchronous wrapper for Zoho\'s numerous APIs',
     long_description=long_description,
     url='https://github.com/A2Z-Cloud/Talk-Zoho',
