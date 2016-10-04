@@ -2,7 +2,7 @@ from asyncio import Lock
 from threading import Timer
 
 
-class RateLimiter():
+class RateLimiter():  # pragma: no cover
 
     def __init__(self, *, requests_per_minute):
         self.requests      = 0
