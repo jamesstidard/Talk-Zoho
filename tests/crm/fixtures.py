@@ -2,6 +2,19 @@ import os
 
 import pytest
 
+from talkzoho import CRMClient
+from talkzoho.regions import EU
+
+
+@pytest.fixture
+def crm(auth_token, scope='session'):
+    return CRMClient(auth_token=auth_token)
+
+
+@pytest.fixture
+def eu_crm(eu_auth_token, scope='session'):
+    return CRMClient(auth_token=eu_auth_token, region=EU)
+
 
 @pytest.fixture
 def auth_token(scope="session"):

@@ -1,2 +1,0 @@
-MODULE = 'Accounts'
-PRIMARY_KEY = 'ACCOUNTID'

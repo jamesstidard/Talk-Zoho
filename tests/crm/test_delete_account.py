@@ -2,12 +2,10 @@ import pytest
 
 from tests.crm.fixtures import *  # noqa
 
-from talkzoho.crm import insert_account, delete_account
-
 
 @pytest.mark.gen_test
-def test_can_delete_account(auth_token):
+def test_can_delete_account(crm):
     account    = {'Account Name': 'DELETE ME'}
-    account_id = yield insert_account(account, auth_token=auth_token)
-    result     = yield delete_account(id=account_id, auth_token=auth_token)
+    account_id = yield crm.accounts.insert(account)
+    result     = yield crm.accounts.delete(account_id)
     assert result is True
