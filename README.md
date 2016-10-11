@@ -18,7 +18,7 @@ from talkzoho import CRMClient
 from talkzoho.utils import wait
 
 
-account = wait(crm.accounts.get, id='7030050000019540342', auth_token='xxx')
+account = wait(crm.accounts.get, '7030050000019540342')
 ```
 
 ## Installation
