@@ -18,7 +18,7 @@ from talkzoho import CRMClient
 from talkzoho.utils import wait
 
 
-account = wait(crm.accounts.get, id='7030050000019540342', auth_token='xxx')
+account = wait(crm.accounts.get, '7030050000019540342')
 ```
 
 ## Installation
@@ -32,8 +32,9 @@ from talkzoho import CRMClient
 
 
 async def main():
+    crm = CRMClient(auth_token='xxx')
+
     # Get Account
-    crm     = CRMClient(auth_token='xxx')
     account = await crm.accounts.get('7030050000019540342')
 
     # Insert Lead
@@ -45,10 +46,11 @@ async def main():
     bills = await crm.leads.filter(term='Bill', limit=1)
 
     # Update Contact
-    contact_id = await crm.contacts.update({
+    jill = {
         'CONTACTID': '7030050000019540536',
         'First Name': 'Jill',
-        'Last Name': 'Jillson'})
+        'Last Name': 'Jillson'}
+    contact_id = await crm.contacts.update(jill, primary_key='CONTACTID')
 
     # Delete Contact
     success = await crm.contacts.delete('7030050000019540536')
