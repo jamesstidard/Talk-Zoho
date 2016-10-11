@@ -28,8 +28,6 @@ class Module(Resource):
     def base_query(self):
         return self.service.base_query
 
-
-
     async def get_canonical_map(self):
         """
         Will return the module map associated to
