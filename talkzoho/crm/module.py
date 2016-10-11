@@ -37,13 +37,14 @@ class Module(Resource):
         The Potentials module in Zoho has been renamed opportunities
         and crm.
         """
-        maps = await self.service.get_module_maps
+        modules = await self.service.get_module_maps()
         try:
-            (module_map) = [m for m in maps if m.canonical_name == self.name]
-        except ValueError as e:
-            (module_map) = [m for m in maps if m.plural_alias == self.name]
+            [module] = [m for m in modules if m.canonical_name == self.name]
+        except ValueError:
+            [module] = [m for m in modules
+                if m.plural_alias.replace(' ', '') == self.name]
 
-        return module_map.canonical_name
+        return module.canonical_name
 
     async def get(self, id: Union[int, str], *, columns=None):
         module_name = await self.get_canonical_name()

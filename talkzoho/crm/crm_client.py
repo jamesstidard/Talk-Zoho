@@ -1,11 +1,10 @@
-from urllib import urlencode
+from urllib.parse import urlencode
 from collections import namedtuple
 
 from tornado.escape import json_decode
 
 from talkzoho.service_client import ServiceClient
 from talkzoho.crm.module import Module
-from talkzoho.crm.utils import unwrap_items
 from talkzoho import logger
 
 
@@ -40,7 +39,7 @@ class CRMClient(ServiceClient):
         response = await self.http_client.fetch(url)
 
         body = json_decode(response.body.decode('utf-8'))
-        maps = unwrap_items(body)
+        maps = body['response']['result']['row']
 
         return [ModuleMap(
             canonical_name=m['content'],
