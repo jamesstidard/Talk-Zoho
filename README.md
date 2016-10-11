@@ -32,8 +32,9 @@ from talkzoho import CRMClient
 
 
 async def main():
+    crm = CRMClient(auth_token='xxx')
+
     # Get Account
-    crm     = CRMClient(auth_token='xxx')
     account = await crm.accounts.get('7030050000019540342')
 
     # Insert Lead
