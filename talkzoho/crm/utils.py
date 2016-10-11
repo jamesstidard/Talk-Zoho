@@ -121,3 +121,10 @@ def translate_item(item):
         return None if value == 'null' else value
 
     return {kwarg['val']: nullify(kwarg['content']) for kwarg in fields}
+
+
+def make_module_id_name(module_map):
+    if module_map.canonical_name.startswith('CustomModule'):
+        return '{}_ID'.format(module_map.canonical_name.upper())
+    else:
+        return '{}ID'.format(module_map.singular_alias.upper())

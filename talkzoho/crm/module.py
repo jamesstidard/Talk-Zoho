@@ -9,7 +9,8 @@ from fuzzywuzzy import fuzz
 
 from talkzoho import logger
 from talkzoho.resource import Resource
-from talkzoho.crm.utils import select_columns, unwrap_items, wrap_items
+from talkzoho.crm.utils\
+    import select_columns, unwrap_items, wrap_items, make_module_id_name
 
 
 class Module(Resource):
@@ -27,7 +28,9 @@ class Module(Resource):
     def base_query(self):
         return self.service.base_query
 
-    async def get_canonical_name(self):
+
+
+    async def get_canonical_map(self):
         """
         Will return the module map associated to
         the Module's instance name.
@@ -44,10 +47,11 @@ class Module(Resource):
             [module] = [m for m in modules
                 if m.plural_alias.replace(' ', '') == self.name]
 
-        return module.canonical_name
+        return module
 
     async def get(self, id: Union[int, str], *, columns=None):
-        module_name = await self.get_canonical_name()
+        module_map  = await self.get_canonical_map()
+        module_name = module_map.canonical_name
         module_url  = self.module_url(module_name)
 
         query = {
@@ -70,7 +74,8 @@ class Module(Resource):
         return unwrap_items(body, single_item=True)
 
     async def insert(self, record: dict, *, trigger_workflows: bool=True):
-        module_name = await self.get_canonical_name()
+        module_map  = await self.get_canonical_map()
+        module_name = module_map.canonical_name
         module_url  = self.module_url(module_name)
         xml_record = wrap_items(record, module_name=module_name)
 
@@ -99,7 +104,8 @@ class Module(Resource):
                      columns: Optional[list]=None,
                      offset: int=0,
                      limit: Optional[int]=None):
-        module_name = await self.get_canonical_name()
+        module_map  = await self.get_canonical_map()
+        module_name = module_map.canonical_name
         module_url  = self.module_url(module_name)
         url = '{module_url}/getRecords'.format(module_url=module_url)
 
@@ -163,11 +169,12 @@ class Module(Resource):
     async def update(self,
                      record: dict,
                      *,
-                     primary_key: str,
                      trigger_workflow: bool=True):
-        module_name = await self.get_canonical_name()
+        module_map  = await self.get_canonical_map()
+        module_name = module_map.canonical_name
         module_url  = self.module_url(module_name)
-        record_id  = record.pop(primary_key)
+        module_key  = make_module_id_name(module_map=module_map)
+        record_id  = record.pop(module_key)
         xml_record = wrap_items(record, module_name=module_name)
 
         url  = '{module_url}/updateRecords'.format(module_url=module_url)
@@ -187,7 +194,8 @@ class Module(Resource):
         return unwrap_items(body, single_item=True)['Id']
 
     async def delete(self, id: Union[int, str]):
-        module_name = await self.get_canonical_name()
+        module_map  = await self.get_canonical_map()
+        module_name = module_map.canonical_name
         module_url  = self.module_url(module_name)
 
         query = {'id': id, **self.base_query}
@@ -202,7 +210,8 @@ class Module(Resource):
         return unwrap_items(body, single_item=True)
 
     async def upload_file(self, *, record_id: str, url: str):
-        module_name = await self.get_canonical_name()
+        module_map  = await self.get_canonical_map()
+        module_name = module_map.canonical_name
         module_url  = self.module_url(module_name)
 
         url  = '{module_url}/uploadFile'.format(module_url=module_url)
@@ -215,7 +224,8 @@ class Module(Resource):
         return unwrap_items(body, single_item=True)['Id']
 
     async def delete_file(self, id: Union[int, str]):
-        module_name = await self.get_canonical_name()
+        module_map  = await self.get_canonical_map()
+        module_name = module_map.canonical_name
         module_url  = self.module_url(module_name)
 
         query = {'id': id, **self.base_query}
