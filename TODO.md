@@ -1,3 +1,4 @@
+- [ ] Figure out imports so only Clients can be imported from talkzoho import CRMClient, SupportClient
 - [ ] Batch update/insert records
 - [ ] Zoho CRM endpoints other then CRUD
 - [ ] Zoho Books
