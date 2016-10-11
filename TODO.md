@@ -6,3 +6,4 @@
 - [ ] Zoho Projects
 - [ ] On CRMClient lazy async get_module_map
 - [ ] Cache module map for minute or so - override in __init__ for client
+- [ ] switch to using `AsyncCRMClient` and `CRMClient`

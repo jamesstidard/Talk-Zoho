@@ -38,14 +38,13 @@ class Module(Resource):
         The Potentials module in Zoho has been renamed opportunities
         and crm.
         """
-        modules = await self.service.get_module_maps()
-        try:
-            [module] = [m for m in modules if m.canonical_name == self.name]
-        except ValueError:
-            [module] = [m for m in modules
-                if m.plural_alias.replace(' ', '') == self.name]
-
-        return module
+        name = self.name
+        maps = await self.service.get_module_maps()
+        if self.service.use_module_aliases:
+            [m] = [m for m in maps if m.plural_alias.replace(' ', '') == name]
+        else:
+            [m] = [m for m in maps if m.canonical_name == name]
+        return m
 
     async def get(self, id: Union[int, str], *, columns=None):
         module_map  = await self.get_canonical_map()

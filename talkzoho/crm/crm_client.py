@@ -16,8 +16,9 @@ class CRMClient(ServiceClient):
     SCOPE              = 'crmapi'
     MAX_PAGE_SIZE      = 200
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, use_module_aliases=False, **kwargs):
         super().__init__(*args, **kwargs)
+        self.use_module_aliases = use_module_aliases
 
     @property
     def base_url(self):
