@@ -14,11 +14,10 @@ from talkzoho.crm.utils import select_columns, unwrap_items, wrap_items
 
 class Module(Resource):
 
-    @property
-    def module_url(self):
+    def module_url(self, module_name):
         return '{base_url}/{module}'.format(
             base_url=self.service.base_url,
-            module=self.name)
+            module=module_name)
 
     @property
     def http_client(self):
@@ -28,7 +27,28 @@ class Module(Resource):
     def base_query(self):
         return self.service.base_query
 
+    async def get_canonical_name(self):
+        """
+        Will return the module map associated to
+        the Module's instance name.
+        Zoho's canonical names will take precidence and user
+        aliases second.
+        e.g.
+        The Potentials module in Zoho has been renamed opportunities
+        and crm.
+        """
+        maps = await self.service.get_module_maps
+        try:
+            (module_map) = [m for m in maps if m.canonical_name == self.name]
+        except ValueError as e:
+            (module_map) = [m for m in maps if m.plural_alias == self.name]
+
+        return module_map.canonical_name
+
     async def get(self, id: Union[int, str], *, columns=None):
+        module_name = await self.get_canonical_name()
+        module_url  = self.module_url(module_name)
+
         query = {
             'id': id,
             'version': 2,
@@ -36,10 +56,10 @@ class Module(Resource):
             **self.base_query}
 
         if columns:
-            query['selectColumns'] = select_columns(self.name, columns)
+            query['selectColumns'] = select_columns(module_name, columns)
 
         url = '{module_url}/getRecordById?{query}'.format(
-            module_url=self.module_url,
+            module_url=module_url,
             query=urlencode(query))
 
         logger.info('GET: {}'.format(url))
@@ -49,9 +69,11 @@ class Module(Resource):
         return unwrap_items(body, single_item=True)
 
     async def insert(self, record: dict, *, trigger_workflows: bool=True):
-        xml_record = wrap_items(record, module_name=self.name)
+        module_name = await self.get_canonical_name()
+        module_url  = self.module_url(module_name)
+        xml_record = wrap_items(record, module_name=module_name)
 
-        url  = '{module_url}/insertRecords'.format(module_url=self.module_url)
+        url  = '{module_url}/insertRecords'.format(module_url=module_url)
         body = urlencode({
             'id': id,
             'version': 2,
@@ -76,7 +98,9 @@ class Module(Resource):
                      columns: Optional[list]=None,
                      offset: int=0,
                      limit: Optional[int]=None):
-        url = '{module_url}/getRecords'.format(module_url=self.module_url)
+        module_name = await self.get_canonical_name()
+        module_url  = self.module_url(module_name)
+        url = '{module_url}/getRecords'.format(module_url=module_url)
 
         if limit == 0:
             return []
@@ -101,10 +125,10 @@ class Module(Resource):
                 **self.base_query}
 
             if columns:
-                query['selectColumns'] = select_columns(self.name, columns)
+                query['selectColumns'] = select_columns(module_name, columns)
 
             url = '{module_url}/getRecords?{query}'.format(
-                module_url=self.module_url,
+                module_url=module_url,
                 query=urlencode(query))
 
             logger.info('GET: {}'.format(url))
@@ -140,10 +164,12 @@ class Module(Resource):
                      *,
                      primary_key: str,
                      trigger_workflow: bool=True):
+        module_name = await self.get_canonical_name()
+        module_url  = self.module_url(module_name)
         record_id  = record.pop(primary_key)
-        xml_record = wrap_items(record, module_name=self.name)
+        xml_record = wrap_items(record, module_name=module_name)
 
-        url  = '{module_url}/updateRecords'.format(module_url=self.module_url)
+        url  = '{module_url}/updateRecords'.format(module_url=module_url)
         body = urlencode({
             'version': 2,
             'newFormat': 2,
@@ -160,9 +186,12 @@ class Module(Resource):
         return unwrap_items(body, single_item=True)['Id']
 
     async def delete(self, id: Union[int, str]):
+        module_name = await self.get_canonical_name()
+        module_url  = self.module_url(module_name)
+
         query = {'id': id, **self.base_query}
         url   = '{module_url}/deleteRecords?{query}'.format(
-            module_url=self.module_url,
+            module_url=module_url,
             query=urlencode(query))
 
         logger.info('DELETE: {}'.format(url))
@@ -172,7 +201,10 @@ class Module(Resource):
         return unwrap_items(body, single_item=True)
 
     async def upload_file(self, *, record_id: str, url: str):
-        url  = '{module_url}/uploadFile'.format(module_url=self.module_url)
+        module_name = await self.get_canonical_name()
+        module_url  = self.module_url(module_name)
+
+        url  = '{module_url}/uploadFile'.format(module_url=module_url)
         body = urlencode({'id': id, 'attachmentUrl': url, **self.base_query})
 
         logger.info('POST: {}, BODY: {}'.format(url, body))
@@ -182,9 +214,12 @@ class Module(Resource):
         return unwrap_items(body, single_item=True)['Id']
 
     async def delete_file(self, id: Union[int, str]):
+        module_name = await self.get_canonical_name()
+        module_url  = self.module_url(module_name)
+
         query = {'id': id, **self.base_query}
         url   = '{module_url}/deleteFile?{query}'.format(
-            module_url=self.module_url,
+            module_url=module_url,
             query=urlencode(query))
 
         logger.info('GET: {}'.format(url))

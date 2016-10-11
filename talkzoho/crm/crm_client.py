@@ -1,5 +1,15 @@
+from urllib import urlencode
+from collections import namedtuple
+
+from tornado.escape import json_decode
+
 from talkzoho.service_client import ServiceClient
 from talkzoho.crm.module import Module
+from talkzoho.crm.utils import unwrap_items
+from talkzoho import logger
+
+
+ModuleMap = namedtuple('ModuleMap', 'canonical_name, singular_alias, plural_alias')  # noqa
 
 
 class CRMClient(ServiceClient):
@@ -20,6 +30,22 @@ class CRMClient(ServiceClient):
         return {
             'scope': self.SCOPE,
             'authtoken': self.auth_token}
+
+    async def get_module_maps(self):
+        url  = '{base_url}/Info/getModules?{query}'.format(
+            base_url=self.base_url,
+            query=urlencode(self.base_query))
+
+        logger.info('GET: {}'.format(url))
+        response = await self.http_client.fetch(url)
+
+        body = json_decode(response.body.decode('utf-8'))
+        maps = unwrap_items(body)
+
+        return [ModuleMap(
+            canonical_name=m['content'],
+            singular_alias=m['sl'],
+            plural_alias=m['pl']) for m in maps]
 
     def __getattr__(self, attr):
         """
