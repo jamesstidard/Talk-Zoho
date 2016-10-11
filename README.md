@@ -54,6 +54,23 @@ async def main():
     success = await crm.contacts.delete('7030050000019540536')
 ```
 
+## Renamed and Custom Modules
+Talk Zoho supports renamed standard modules; simply use the plural alias as the module name. The example below shows how you might can get both the potential from the default module name and an alias (if the module has been renamed to 'Opportunities' on the CRM).
+```python
+potential   = await crm.potentials.get('7030050000019540360')
+opportunity = await crm.opportunities.get('7030050000019540360')
+# potential == opportunity
+```
+
+This works the same for custom modules:
+```python
+custom_record = await crm.custom_module_8.get('9130050000019540360')
+partner       = await crm.partners.get('9130050000019540360')
+# custom_record == partner
+```
+
+NOTE: The canonical module names will take president if there is a conflict. For example, if you made a custom module with the name of a default module.
+
 ## Error Handling
 Zoho use a number of ways to inform the client of errors. For example, CRM always returns a 200 status code with a error message and code in the body, where as books will return more standard looking HTTP errors. Talk Zoho tries to unify these and raises a [`tornado.web.HTTPError`](http://www.tornadoweb.org/en/stable/web.html#tornado.web.HTTPError). Talk Zoho will also map the Zoho specific codes to their HTTP status code equivalent.
 
