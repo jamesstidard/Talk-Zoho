@@ -4,7 +4,7 @@ from collections import namedtuple
 from tornado.escape import json_decode
 
 from talkzoho.service_client import ServiceClient
-from talkzoho.crm.module import Module
+from talkzoho.crm.crm_resource import CRMResource
 from talkzoho import logger
 
 
@@ -32,6 +32,7 @@ class CRMClient(ServiceClient):
             'authtoken': self.auth_token}
 
     async def get_module_maps(self):
+        # TODO: only do if map alias is True
         url  = '{base_url}/Info/getModules?{query}'.format(
             base_url=self.base_url,
             query=urlencode(self.base_query))
@@ -54,4 +55,4 @@ class CRMClient(ServiceClient):
         """
         components  = attr.split('_')
         module_name = ''.join(c.title() for c in components)
-        return Module(service=self, name=module_name)
+        return CRMResource(service=self, name=module_name)

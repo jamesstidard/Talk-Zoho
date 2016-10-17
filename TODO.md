@@ -4,6 +4,7 @@
 - [ ] Zoho Books
 - [ ] Zoho Support
 - [ ] Zoho Projects
-- [ ] On CRMClient lazy async get_module_map
+- [x] On CRMClient lazy async get_module_map
 - [ ] Cache module map for minute or so - override in __init__ for client
 - [ ] switch to using `AsyncCRMClient` and `CRMClient`
+- [ ] add mapping to `CRMClient(mappings={'Lead': {'LEADID': 'id', 'Lead Name', 'name'}, 'Potentials': {...}, ...})`

@@ -13,16 +13,12 @@ from talkzoho.crm.utils\
     import select_columns, unwrap_items, wrap_items, make_module_id_name
 
 
-class Module(Resource):
+class CRMResource(Resource):
 
     def module_url(self, module_name):
         return '{base_url}/{module}'.format(
             base_url=self.service.base_url,
             module=module_name)
-
-    @property
-    def http_client(self):
-        return self.service.http_client
 
     @property
     def base_query(self):
@@ -164,8 +160,7 @@ class Module(Resource):
         return results[:limit]
 
     async def update(self,
-                     record: dict,
-                     *,
+                     record: dict, *,
                      trigger_workflow: bool=True):
         module_map  = await self.get_canonical_map()
         module_name = module_map.canonical_name

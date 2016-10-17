@@ -9,6 +9,8 @@ def unwrap_items(response, *, single_item=False, columns=None):
     """
     try:
         # Dont know the resource name but should be the only key
+        # Unless you get portals which returns login_id
+        response = {k: v for k, v in response.items() if k != 'login_id'}
         assert len(response) == 1
         resources = list(response.values())[0]
 

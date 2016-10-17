@@ -5,3 +5,4 @@ logger.addHandler(logging.NullHandler())
 
 
 from .crm.crm_client import CRMClient  # noqa
+from .projects.projects_client import ProjectsClient  # noqa

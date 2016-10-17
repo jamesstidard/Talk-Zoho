@@ -2,6 +2,14 @@ import os
 
 import pytest
 
+from talkzoho import ProjectsClient
+from talkzoho.regions import EU
+
+
+@pytest.fixture
+def projects(auth_token, scope='session'):
+    return ProjectsClient(auth_token=auth_token, region=EU)
+
 
 @pytest.fixture
 def auth_token(scope="session"):
