@@ -86,11 +86,7 @@ class CRMResource(Resource):
         response = await self.http_client.fetch(url, method='POST', body=body)
         body     = json_decode(response.body.decode('utf-8'))
 
-        if type(record) is list:
-            results = unwrap_items(body, single_item=False)
-            return [r['Id'] for r in results]
-        else:
-            return unwrap_items(body, single_item=True)['Id']
+        return unwrap_items(body, single_item=True)['Id']
 
     async def filter(self, *,
                      term: Optional[str]=None,

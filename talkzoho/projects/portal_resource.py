@@ -24,8 +24,6 @@ class PortalResource(BaseResource):
                      columns: Optional[list]=None,
                      offset: int=0,
                      limit: Optional[int]=None):
-        # TODO: refactor this... quite discusting.
-        # code smell: side effecty changing filters base url
         self.portal_id = portal_id
         return await super().filter(
             term=term,
@@ -33,8 +31,10 @@ class PortalResource(BaseResource):
             offset=offset,
             limit=limit)
 
-    async def delete(self,
-                     id: Union[int, str], *,
-                     portal_id: Union[str, int]):
+    async def insert(self, record: dict, *, portal_id: Union[str, int]):
+        self.portal_id = portal_id
+        return await super().insert(record=record)
+
+    async def delete(self, id: Union[int, str], *, portal_id: Union[str, int]):
         self.portal_id = portal_id
         return await super().delete(id=id)

@@ -10,7 +10,7 @@ from fuzzywuzzy import fuzz
 
 from talkzoho import logger
 from talkzoho.resource import Resource
-from talkzoho.projects.utils import unwrap_items
+from talkzoho.projects.utils import unwrap_items, to_zoho_value
 
 
 class BaseResource(Resource):
@@ -35,6 +35,17 @@ class BaseResource(Resource):
         body     = json_decode(response.body.decode("utf-8"))
 
         return unwrap_items(body, single_item=True, columns=columns)
+
+    async def insert(self, record: dict):
+        url    = self.module_url(self.name)
+        body   = urlencode({**record, **self.base_query})
+        record = {k: to_zoho_value(v) for k, v in record.items()}
+
+        logger.info('POST: {}, BODY: {}'.format(url, body))
+        response = await self.http_client.fetch(url, method='POST', body=body)
+        body     = json_decode(response.body.decode('utf-8'))
+
+        return unwrap_items(body, single_item=True)['id']
 
     async def filter(self, *,
                      term: Optional[str]=None,

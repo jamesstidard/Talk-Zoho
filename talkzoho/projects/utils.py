@@ -1,4 +1,17 @@
+from datetime import date, datetime
+
 from tornado.web import HTTPError
+
+
+def to_zoho_value(value):
+    if value is None:
+        return ''
+    elif isinstance(value, list):
+        return ','.join(value)
+    elif isinstance(value, datetime) or isinstance(value, date):
+        return value.strftime('%m-%d-%Y')
+    else:
+        return value
 
 
 def unwrap_items(response, *, single_item=False, columns=None):
