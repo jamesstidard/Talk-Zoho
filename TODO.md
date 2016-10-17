@@ -8,3 +8,4 @@
 - [ ] Cache module map for minute or so - override in __init__ for client
 - [ ] switch to using `AsyncCRMClient` and `CRMClient`
 - [ ] add mapping to `CRMClient(mappings={'Lead': {'LEADID': 'id', 'Lead Name', 'name'}, 'Potentials': {...}, ...})`
+- [ ] projects: allow custom fields
