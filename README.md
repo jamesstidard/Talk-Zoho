@@ -46,11 +46,10 @@ async def main():
     bills = await crm.leads.filter(term='Bill', limit=1)
 
     # Update Contact
-    jill = {
+    contact_id = await crm.contacts.update({
         'CONTACTID': '7030050000019540536',
         'First Name': 'Jill',
-        'Last Name': 'Jillson'}
-    contact_id = await crm.contacts.update(jill, primary_key='CONTACTID')
+        'Last Name': 'Jillson'})
 
     # Delete Contact
     success = await crm.contacts.delete('7030050000019540536')
