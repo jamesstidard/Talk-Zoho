@@ -1,4 +1,4 @@
-- [ ] Figure out imports so only Clients can be imported from talkzoho import CRMClient, SupportClient
+- [ ] Figure out imports so only Clients can be imported from talkzoho import CRMClient, SupportClient during pip install/setup
 - [ ] Batch update/insert records
 - [ ] Zoho CRM endpoints other then CRUD
 - [ ] Zoho Books
