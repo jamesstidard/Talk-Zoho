@@ -19,8 +19,6 @@ class ProjectResource(BaseResource):
                      columns: Optional[list]=None,
                      offset: int=0,
                      limit: Optional[int]=None):
-        # TODO: refactor this... quite discusting.
-        # code smell: side effecty changing filters base url
         self.portal_id = portal_id
         self.project_id = project_id
         return await super().filter(

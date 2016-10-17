@@ -34,18 +34,8 @@ class BaseResource(Resource):
         response = await self.http_client.fetch(url, method='GET')
         body     = json_decode(response.body.decode("utf-8"))
 
-        return unwrap_items(body, single_item=True, columns=columns)
-
-    async def insert(self, record: dict):
-        url    = self.module_url(self.name)
-        body   = urlencode({**record, **self.base_query})
-        record = {k: to_zoho_value(v) for k, v in record.items()}
-
-        logger.info('POST: {}, BODY: {}'.format(url, body))
-        response = await self.http_client.fetch(url, method='POST', body=body)
-        body     = json_decode(response.body.decode('utf-8'))
-
-        return unwrap_items(body, single_item=True)['id']
+        [item] = unwrap_items(body)
+        return {k: v for k, v in item.items() if not columns or k in columns}
 
     async def filter(self, *,
                      term: Optional[str]=None,
@@ -101,6 +91,31 @@ class BaseResource(Resource):
             results = sorted(results, key=fuzzy_score, reverse=True)
 
         return results[:limit]
+
+    async def insert(self, record: dict):
+        url    = self.module_url(self.name)
+        body   = urlencode({**record, **self.base_query})
+        record = {k: to_zoho_value(v) for k, v in record.items()}
+
+        logger.info('POST: {}, BODY: {}'.format(url, body))
+        response = await self.http_client.fetch(url, method='POST', body=body)
+        body     = json_decode(response.body.decode('utf-8'))
+
+        [item] = unwrap_items(body)
+        return item['id']
+
+    async def update(self, record: dict):
+        url  = '{module_url}{id}/'.format(
+            module_url=self.module_url(self.name),
+            id=record.pop('id'))
+        body = urlencode({**record, **self.base_query})
+
+        logger.info('POST: {}, BODY: {}'.format(url, body))
+        response = await self.http_client.fetch(url, method='POST', body=body)
+        body     = json_decode(response.body.decode('utf-8'))
+
+        [item] = unwrap_items(body)
+        return item
 
     async def delete(self, id: Union[int, str]):
         url = '{module_url}{id}/?{query}'.format(

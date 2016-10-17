@@ -35,6 +35,10 @@ class PortalResource(BaseResource):
         self.portal_id = portal_id
         return await super().insert(record=record)
 
+    async def update(self, record: dict, *, portal_id: Union[str, int]):
+        self.portal_id = portal_id
+        return await super().update(record=record)
+
     async def delete(self, id: Union[int, str], *, portal_id: Union[str, int]):
         self.portal_id = portal_id
         return await super().delete(id=id)

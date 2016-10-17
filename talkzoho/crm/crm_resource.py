@@ -64,7 +64,8 @@ class CRMResource(Resource):
         response = await self.http_client.fetch(url, method='GET')
         body     = json_decode(response.body.decode('utf-8'))
 
-        return unwrap_items(body, single_item=True)
+        [item] = unwrap_items(body)
+        return item
 
     async def insert(self, record: dict, *, trigger_workflows: bool=True):
         module_map  = await self.get_canonical_map()
@@ -86,7 +87,8 @@ class CRMResource(Resource):
         response = await self.http_client.fetch(url, method='POST', body=body)
         body     = json_decode(response.body.decode('utf-8'))
 
-        return unwrap_items(body, single_item=True)['Id']
+        [item] = unwrap_items(body)
+        return item['Id']
 
     async def filter(self, *,
                      term: Optional[str]=None,
@@ -179,7 +181,8 @@ class CRMResource(Resource):
         response = await self.http_client.fetch(url, method='POST', body=body)
         body     = json_decode(response.body.decode('utf-8'))
 
-        return unwrap_items(body, single_item=True)['Id']
+        [item] = unwrap_items(body)
+        return item['Id']
 
     async def delete(self, id: Union[int, str]):
         module_map  = await self.get_canonical_map()
@@ -195,7 +198,8 @@ class CRMResource(Resource):
         response = await self.http_client.fetch(url, method='GET')
         body     = json_decode(response.body.decode('utf-8'))
 
-        return unwrap_items(body, single_item=True)
+        [item] = unwrap_items(body)
+        return item
 
     async def upload_file(self, *, record_id: str, url: str):
         module_map  = await self.get_canonical_map()
@@ -209,7 +213,8 @@ class CRMResource(Resource):
         response = await self.http_client.fetch(url, method='POST', body=body)
         body     = json_decode(response.body.decode('utf-8'))
 
-        return unwrap_items(body, single_item=True)['Id']
+        [item] = unwrap_items(body)
+        return item['Id']
 
     async def delete_file(self, id: Union[int, str]):
         module_map  = await self.get_canonical_map()
@@ -225,4 +230,5 @@ class CRMResource(Resource):
         response = await self.http_client.fetch(url, method='GET')
         body     = json_decode(response.body.decode('utf-8'))
 
-        return unwrap_items(body, single_item=True)
+        [item] = unwrap_items(body)
+        return item

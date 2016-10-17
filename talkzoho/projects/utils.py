@@ -14,7 +14,7 @@ def to_zoho_value(value):
         return value
 
 
-def unwrap_items(response, *, single_item=False, columns=None):
+def unwrap_items(response):
     """
     Project response items always comeback in a list
     even when they are GETs for an ID. Single Item tells
@@ -27,14 +27,7 @@ def unwrap_items(response, *, single_item=False, columns=None):
         assert len(response) == 1
         resources = list(response.values())[0]
 
-        if single_item and len(resources) != 1:
-            ValueError('More then one resource was returned.')
-
-        resources = [
-            {k: v for k, v in r.items() if not columns or k in columns}
-            for r in resources]
-
-        return resources[0] if single_item else resources
+        return resources
     except (AssertionError, KeyError):
         unwrap_error(response)
 
