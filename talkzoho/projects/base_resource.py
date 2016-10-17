@@ -3,6 +3,7 @@ from typing import Optional, Union
 from urllib.parse import urlencode
 
 from tornado.web import HTTPError
+from tornado.httpclient import HTTPError as HTTPClientError
 from tornado.escape import json_decode
 
 from fuzzywuzzy import fuzz
@@ -89,3 +90,18 @@ class BaseResource(Resource):
             results = sorted(results, key=fuzzy_score, reverse=True)
 
         return results[:limit]
+
+    async def delete(self, id: Union[int, str]):
+        url = '{module_url}{id}/?{query}'.format(
+            module_url=self.module_url(self.name),
+            id=id,
+            query=urlencode(self.base_query))
+
+        logger.info('DELETE: {}'.format(url))
+        # mimic zoho crm response and always return True
+        # TODO: add get test to zoho CRM
+        try:
+            await self.http_client.fetch(url, method='DELETE')
+        except HTTPClientError:
+            pass
+        return True

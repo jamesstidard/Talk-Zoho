@@ -32,3 +32,9 @@ class PortalResource(BaseResource):
             columns=columns,
             offset=offset,
             limit=limit)
+
+    async def delete(self,
+                     id: Union[int, str], *,
+                     portal_id: Union[str, int]):
+        self.portal_id = portal_id
+        return await super().delete(id=id)
