@@ -74,7 +74,7 @@ def unwrap_error(zoho_error):
             return True
 
         status_code = http_status_code(zoho_code=code)
-        raise HTTPError(status_code, reason=message)
+        raise HTTPError(status_code, reason='{}:{}'.format(code, message))
     except (AssertionError, KeyError, IndexError):
         raise ValueError("Couldn't parse zoho result")
 
