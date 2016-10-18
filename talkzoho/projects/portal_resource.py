@@ -31,12 +31,12 @@ class PortalResource(BaseResource):
             offset=offset,
             limit=limit)
 
-    async def insert(self, record: dict, *, portal_id: Union[str, int]):
-        self.portal_id = portal_id
+    async def insert(self, record: dict):
+        self.portal_id = record.pop('portal_id')
         return await super().insert(record=record)
 
-    async def update(self, record: dict, *, portal_id: Union[str, int]):
-        self.portal_id = portal_id
+    async def update(self, record: dict):
+        self.portal_id = record.pop('portal_id')
         return await super().update(record=record)
 
     async def delete(self, id: Union[int, str], *, portal_id: Union[str, int]):
