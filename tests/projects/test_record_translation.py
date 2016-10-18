@@ -16,3 +16,7 @@ def test_date_to_correct_format():
 def test_id_list_to_correct_format():
     ids = ['1', '2', '3']
     assert '1,2,3' == to_zoho_value(ids)
+
+
+def test_none_to_correct_format():
+    assert '' == to_zoho_value(None)
