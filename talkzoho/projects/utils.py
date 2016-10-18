@@ -47,7 +47,7 @@ def unwrap_error(zoho_error):
 def http_status_code(*, zoho_code):  # pragma: no cover
     zoho_code = str(zoho_code)
 
-    if zoho_code in [6401, 6891, 6403, 6831, 6832, 6500]:  # noqa
+    if zoho_code in [6401, 6891, 6403, 6831, 6832, 6500]:
         return 400  # bad request
     elif zoho_code in [6401, 6890]:
         return 401  # unauthorised

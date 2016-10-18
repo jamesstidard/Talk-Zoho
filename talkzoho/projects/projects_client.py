@@ -26,15 +26,15 @@ class ProjectsClient(ServiceClient):
         Translates attribute access to Zoho Projects module names.
         e.g. . becomes Leads and custom_module_8 becomes CustomModule8
         """
-        components  = attr.split('_')
-        module_name = ''.join(c.lower() for c in components)
-        if module_name in ['portals']:
-            return BaseResource(service=self, name=module_name)
-        elif module_name in ['projects', 'users']:
-            return PortalResource(service=self, name=module_name)
-        elif module_name in ['forums', 'events', 'milestones', 'tasklists', 'tasks', 'bugs']:  # noqa
-            return ProjectResource(service=self, name=module_name)
-        # elif module_name in ['logs']:
-        #     return LogResource(service=self, name=module_name)
+        components    = attr.split('_')
+        resource_name = ''.join(c.lower() for c in components)
+        if resource_name in ['portals']:
+            return BaseResource(service=self, name=resource_name)
+        elif resource_name in ['projects', 'users']:
+            return PortalResource(service=self, name=resource_name)
+        elif resource_name in ['forums', 'events', 'milestones', 'tasklists', 'tasks', 'bugs']:  # noqa
+            return ProjectResource(service=self, name=resource_name)
+        # elif resource_name in ['logs']:
+        #     return LogResource(service=self, name=resource_name)
         else:
             raise AttributeError('Unsupported resource: ' + attr)

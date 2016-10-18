@@ -198,8 +198,8 @@ class CRMResource(Resource):
         response = await self.http_client.fetch(url, method='GET')
         body     = json_decode(response.body.decode('utf-8'))
 
-        [item] = unwrap_items(body)
-        return item
+        success = unwrap_items(body)
+        return success
 
     async def upload_file(self, *, record_id: str, url: str):
         module_map  = await self.get_canonical_map()
