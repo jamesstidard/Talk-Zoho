@@ -5,7 +5,7 @@ from talkzoho.projects.base_resource import BaseResource
 
 class ProjectResource(BaseResource):
 
-    def module_url(self, module_name, portal_id, project_id):
+    def module_url(self, module_name):
         return '{base_url}/portal/{portal_id}/projects/{project_id}/{module}/'.format(  # noqa
             base_url=self.service.base_url,
             portal_id=self.portal_id,
