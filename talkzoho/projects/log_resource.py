@@ -51,7 +51,7 @@ class LogResource(BaseResource):
                      component_type: Optional[str]=None):
         self.portal_id      = portal_id
         self.project_id     = project_id
-        self.component_type = component_type
+        self.component_type = None
 
         logs = await super().filter(term=term, columns=columns, offset=offset, limit=limit)  # noqa: E501
 
