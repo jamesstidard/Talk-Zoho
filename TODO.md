@@ -10,3 +10,4 @@
 - [ ] add mapping to `CRMClient(mappings={'Lead': {'LEADID': 'id', 'Lead Name', 'name'}, 'Potentials': {...}, ...})`
 - [ ] projects: allow custom fields
 - [ ] non base resources should accept parent ids from inside the child body (for insert and update)
+- [ ] TinyDB-like query language: crm.contacts.filter((where('First Name') == 'Bill') & (where('Last Name') == 'Billson'))
