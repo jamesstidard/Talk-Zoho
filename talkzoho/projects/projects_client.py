@@ -34,7 +34,7 @@ class ProjectsClient(ServiceClient):
             return PortalResource(service=self, name=resource_name)
         elif resource_name in ['forums', 'events', 'milestones', 'tasklists', 'tasks', 'bugs']:  # noqa
             return ProjectResource(service=self, name=resource_name)
-        # elif resource_name in ['logs']:
-        #     return LogResource(service=self, name=resource_name)
+        elif resource_name in ['logs']:
+            return LogResource(service=self, name=resource_name)
         else:
             raise AttributeError('Unsupported resource: ' + attr)
