@@ -94,8 +94,8 @@ class BaseResource(Resource):
 
     async def insert(self, record: dict):
         url    = self.module_url(self.name)
-        body   = urlencode({**record, **self.base_query})
         record = {k: to_zoho_value(v) for k, v in record.items()}
+        body   = urlencode({**record, **self.base_query})
 
         logger.info('POST: {}, BODY: {}'.format(url, body))
         response = await self.http_client.fetch(url, method='POST', body=body)
