@@ -5,7 +5,7 @@ from tornado.web import HTTPError
 from talkzoho.projects.base_resource import BaseResource
 
 
-class LogsResource(BaseResource):
+class LogResource(BaseResource):
 
     def module_url(self, module_name):
         if self.component_type is None or self.component_type == 'general':

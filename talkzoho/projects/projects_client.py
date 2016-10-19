@@ -2,7 +2,7 @@ from talkzoho.service_client import ServiceClient
 from talkzoho.projects.base_resource import BaseResource
 from talkzoho.projects.portal_resource import PortalResource
 from talkzoho.projects.project_resource import ProjectResource
-# from talkzoho.projects.logs_resource import LogResource
+from talkzoho.projects.log_resource import LogResource
 
 
 class ProjectsClient(ServiceClient):
