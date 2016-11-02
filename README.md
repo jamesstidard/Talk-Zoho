@@ -4,20 +4,21 @@ A python wrapper library for Zoho API calls which aims to unify the API for the 
 
 The library has asynchronous interface i.e.
 ```python
-from talkzoho import crm
+from talkzoho import CRMClient
 
 
 async def main():
-    account = await crm.get_account(id='7030050000019540342', auth_token='xxx')
+    crm     = CRMClient(auth_token='xxx')
+    account = await crm.accounts.get('7030050000019540342')
 ```
 
 However, Talk Zoho also provides the helper function `talkzoho.utils.wait` for usage in synchronous code.
 ```python
-from talkzoho import crm
+from talkzoho import CRMClient
 from talkzoho.utils import wait
 
 
-account = wait(crm.get_account, id='7030050000019540342', auth_token='xxx')
+account = wait(crm.accounts.get, '7030050000019540342')
 ```
 
 ## Installation
@@ -27,31 +28,54 @@ pip install talkzoho
 
 ## Example Usage
 ```python
-from talkzoho import crm
+from talkzoho import CRMClient
 
 
 async def main():
+    crm = CRMClient(auth_token='xxx')
+
     # Get Account
-    account = await crm.get_account(id='7030050000019540342', auth_token='xxx')
+    account = await crm.accounts.get('7030050000019540342')
 
     # Insert Lead
-    bill = {
+    lead_id = await crm.leads.insert({
         'First Name': 'Bill',
-        'Last Name': 'Billson'}
-    lead_id = await crm.insert_lead(bill, auth_token='xxx')
+        'Last Name': 'Billson'})
 
     # Filter Leads
-    bills = await crm.filter_leads(term='Bill', limit=1, auth_token='xxx')
+    bills = await crm.leads.filter(term='Bill', limit=1)
 
     # Update Contact
-    jill = {
+    contact_id = await crm.contacts.update({
         'CONTACTID': '7030050000019540536',
         'First Name': 'Jill',
-        'Last Name': 'Jillson'}
-    contact_id = await crm.update_contact(jill, auth_token='xxx')
+        'Last Name': 'Jillson'})
 
     # Delete Contact
-    success = await crm.delete_contact(id='7030050000019540536', auth_token='xxx')
+    success = await crm.contacts.delete('7030050000019540536')
+```
+
+## Renamed and Custom Modules
+Talk Zoho supports renamed standard modules; when initialising the `CRMClient` pass the flag to indicate if you want to use Zoho's canonical names or the user's aliases. The flag (`use_module_aliases`) defaults to `False`.
+```python
+async def main():
+    crm = CRMClient(auth_token='xxx', use_module_aliases=False)
+    potential = await crm.potentials.get('7030050000019540360')
+
+    crm = CRMClient(auth_token='xxx', use_module_aliases=True)
+    opportunity = await crm.opportunities.get('7030050000019540360')
+    # potential == opportunity
+```
+
+This works the same for custom modules:
+```python
+async def main():
+    crm = CRMClient(auth_token='xxx', use_module_aliases=False)
+    custom_record = await crm.custom_module_8.get('9130050000019540360')
+
+    crm = CRMClient(auth_token='xxx', use_module_aliases=True)
+    partner = await crm.partners.get('9130050000019540360')
+    # custom_record == partner
 ```
 
 ## Error Handling
@@ -59,13 +83,15 @@ Zoho use a number of ways to inform the client of errors. For example, CRM alway
 
 NOTE: Deleting a CRM record (with a correct-looking id) will never return an error.This is the behavior of Zoho's CRM API.
 ```python
-from talkzoho import crm
+from talkzoho import CRMClient
 from tornado.web import HTTPError
 
 
 async def main():
+    crm = CRMClient(auth_token='xxx')
+
     try:
-        account = await crm.get_account(id='1234', auth_token='xxx')
+        account = await crm.accounts.get('1234')
     except HTTPError as http_error:
         # HTTPError(404, reason='No record available with the specified record ID.')
         print(http_error)

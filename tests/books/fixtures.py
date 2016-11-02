@@ -2,6 +2,13 @@ import os
 
 import pytest
 
+from talkzoho import BooksClient
+
+
+@pytest.fixture
+def books(auth_token, scope='session'):
+    return BooksClient(auth_token=auth_token)
+
 
 @pytest.fixture
 def auth_token(scope="session"):
@@ -10,9 +17,9 @@ def auth_token(scope="session"):
 
 @pytest.fixture
 def organization_id(scope='session'):
-    return '20000146105'
+    return '40529048'
 
 
 @pytest.fixture
 def price_book_id(scope="session"):
-    return "39000000244369"
+    return "95830000001120003"

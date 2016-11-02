@@ -1,7 +1,8 @@
 init:
 	pip install -r requirements/development.txt --no-cache-dir --upgrade
 test:
-	py.test --cov=talkzoho tests/
+	# example `make test` to test all or `make test m=crm` to test module
+	py.test --cov=talkzoho tests/$(shell X="${m}"; echo "$m" | tr '[:upper:]' '[:lower:]')
 test_fail:
 	py.test --cov=talkzoho --ff -x tests/
 deploy:

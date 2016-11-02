@@ -37,7 +37,7 @@ def wrap_items(items, *, module_name: str):
         rows=''.join(rows))
 
 
-def unwrap_items(response, single_item=False):
+def unwrap_items(response):
     try:
         result   = response['response']['result']
 
@@ -47,19 +47,14 @@ def unwrap_items(response, single_item=False):
             rows     = resource['row']
         elif len(result) == 2:
             # On update message returns two keys message and record
-            single_item = True
-            rows        = result['recorddetail']
+            rows     = result['recorddetail']
         else:
             raise ValueError('Unexpected looking response.')
 
         # wrap single resource results in array
         items = rows if isinstance(rows, list) else [rows]
 
-        if single_item and len(items) != 1:
-            ValueError('More then one resource was returned.')
-
-        items = [translate_item(i) for i in items]
-        return items[0] if single_item else items
+        return [translate_item(i) for i in items]
     except (AssertionError, KeyError):
         return unwrap_error(response)
 
@@ -79,7 +74,7 @@ def unwrap_error(zoho_error):
             return True
 
         status_code = http_status_code(zoho_code=code)
-        raise HTTPError(status_code, reason=message)
+        raise HTTPError(status_code, reason='{}: {}'.format(code, message))
     except (AssertionError, KeyError, IndexError):
         raise ValueError("Couldn't parse zoho result")
 
@@ -121,3 +116,10 @@ def translate_item(item):
         return None if value == 'null' else value
 
     return {kwarg['val']: nullify(kwarg['content']) for kwarg in fields}
+
+
+def make_module_id_name(module_map):
+    if module_map.canonical_name.startswith('CustomModule'):
+        return '{}_ID'.format(module_map.canonical_name.upper())
+    else:
+        return '{}ID'.format(module_map.singular_alias.upper())

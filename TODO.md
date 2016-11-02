@@ -1,5 +1,13 @@
+- [ ] Figure out imports so only Clients can be imported from talkzoho import CRMClient, SupportClient during pip install/setup
 - [ ] Batch update/insert records
 - [ ] Zoho CRM endpoints other then CRUD
 - [ ] Zoho Books
 - [ ] Zoho Support
 - [ ] Zoho Projects
+- [x] On CRMClient lazy async get_module_map
+- [ ] Cache module map for minute or so - override in __init__ for client
+- [ ] switch to using `AsyncCRMClient` and `CRMClient`
+- [ ] add mapping to `CRMClient(mappings={'Lead': {'LEADID': 'id', 'Lead Name', 'name'}, 'Potentials': {...}, ...})`
+- [ ] projects: allow custom fields
+- [ ] non base resources should accept parent ids from inside the child body (for insert and update)
+- [ ] TinyDB-like query language: crm.contacts.filter((where('First Name') == 'Bill') & (where('Last Name') == 'Billson'))
