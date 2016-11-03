@@ -7,4 +7,4 @@ test_fail:
 	py.test --cov=talkzoho --ff -x tests/
 deploy:
 	pip install pypandoc
-	python setup.py register sdist upload
+	python setup.py sdist upload
