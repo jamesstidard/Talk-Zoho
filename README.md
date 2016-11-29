@@ -2,6 +2,8 @@
 
 A python wrapper library for Zoho API calls which aims to unify the API for the different Zoho Products (CRM, Support, Projects etc).
 
+NOTE: Only the crm client is in a production ready state.
+
 The library has asynchronous interface i.e.
 ```python
 from talkzoho import CRMClient
