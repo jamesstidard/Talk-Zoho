@@ -206,10 +206,13 @@ class CRMResource(Resource):
         module_name = module_map.canonical_name
         module_url  = self.module_url(module_name)
 
-        url  = '{module_url}/uploadFile'.format(module_url=module_url)
-        body = urlencode({'id': id, 'attachmentUrl': url, **self.base_query})
+        endpoint = '{module_url}/uploadFile'.format(module_url=module_url)
+        body = urlencode({
+            'id': record_id,
+            'attachmentUrl': url,
+            **self.base_query})
 
-        logger.info('POST: {}, BODY: {}'.format(url, body))
+        logger.info('POST: {}, BODY: {}'.format(endpoint, body))
         response = await self.http_client.fetch(url, method='POST', body=body)
         body     = json_decode(response.body.decode('utf-8'))
 
