@@ -67,10 +67,10 @@ class BaseResource(Resource):
             logger.info('GET: {}'.format(url))
             response = await self.http_client.fetch(url, method='GET')
 
-            if response.status_code == 204 and from_index - 1 != offset:
+            if response.code == 204 and from_index - 1 != offset:
                 # if paging and hit end finish paging
                 paging = False
-            elif response.status_code == 204:
+            elif response.code == 204:
                 # unless first request caused the 204
                 raise HTTPError(204, reason='No items found')
             else:
