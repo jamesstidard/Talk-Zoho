@@ -5,7 +5,7 @@ def select_columns(resource, columns):
     return resource + '(' + ','.join(columns) + ')' if columns else ''
 
 
-def unwrap_items(response, single_item=False):
+def unwrap_items(response):
     try:
         result   = response['response']['result']
 
@@ -17,11 +17,8 @@ def unwrap_items(response, single_item=False):
         rows  = resource['row']
         items = rows if isinstance(rows, list) else [rows]
 
-        if single_item and len(items) != 1:
-            ValueError('More then one resource was returned.')
-
         items = [translate_item(i) for i in items]
-        return items[0] if single_item else items
+        return items
     except (AssertionError, KeyError):
         unwrap_error(response)
 

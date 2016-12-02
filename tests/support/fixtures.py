@@ -2,10 +2,15 @@ import os
 
 import pytest
 
+from talkzoho import SupportClient
+from talkzoho.regions import EU
+
 
 @pytest.fixture
-def auth_token(scope="session"):
-    return os.getenv('ZOHO_SUPPORT_AUTH_TOKEN')
+def support(scope="session"):
+    return SupportClient(
+        auth_token=os.getenv('ZOHO_SUPPORT_AUTH_TOKEN'),
+        region=EU)
 
 
 @pytest.fixture
