@@ -98,7 +98,6 @@ class CRMResource(Resource):
         module_map  = await self.get_canonical_map()
         module_name = module_map.canonical_name
         module_url  = self.module_url(module_name)
-        url = '{module_url}/getRecords'.format(module_url=module_url)
 
         if limit == 0:
             return []
@@ -201,7 +200,7 @@ class CRMResource(Resource):
         success = unwrap_items(body)
         return success
 
-    async def upload_file(self, *, record_id: str, url: str):
+    async def upload_file(self, *, record_id: Union[int, str], url: str):
         module_map  = await self.get_canonical_map()
         module_name = module_map.canonical_name
         module_url  = self.module_url(module_name)
@@ -213,7 +212,7 @@ class CRMResource(Resource):
             **self.base_query})
 
         logger.info('POST: {}, BODY: {}'.format(endpoint, body))
-        response = await self.http_client.fetch(url, method='POST', body=body)
+        response = await self.http_client.fetch(endpoint, method='POST', body=body)
         body     = json_decode(response.body.decode('utf-8'))
 
         [item] = unwrap_items(body)
@@ -233,5 +232,5 @@ class CRMResource(Resource):
         response = await self.http_client.fetch(url, method='GET')
         body     = json_decode(response.body.decode('utf-8'))
 
-        [item] = unwrap_items(body)
-        return item
+        success = unwrap_items(body)
+        return success
