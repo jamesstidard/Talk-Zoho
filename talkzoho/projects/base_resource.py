@@ -66,18 +66,16 @@ class BaseResource(Resource):
 
             logger.info('GET: {}'.format(url))
             response = await self.http_client.fetch(url, method='GET')
-            body     = json_decode(response.body.decode('utf-8'))
 
-            try:
-                items = unwrap_items(body)
-            except HTTPError as http_error:
-                # if paging and hit end suppress error
+            if response.status_code == 204 and from_index - 1 != offset:
+                # if paging and hit end finish paging
+                paging = False
+            elif response.status_code == 204:
                 # unless first request caused the 204
-                if http_error.status_code == 204 and from_index - 1 != offset:
-                    paging = False
-                else:
-                    raise
+                raise HTTPError(204, reason='No items found')
             else:
+                body       = json_decode(response.body.decode('utf-8'))
+                items      = unwrap_items(body)
                 results   += items
                 from_index = to_index + 1
                 to_index  += batch_size
