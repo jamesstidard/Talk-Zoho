@@ -79,7 +79,7 @@ class CRMResource(Resource):
             'xmlData': xml_record,
             'newFormat': 2,
             'wfTrigger': str(trigger_workflows).lower(),
-            'duplicateCheck': 2,
+            'duplicateCheck': 1,
             **self.base_query})
 
         logger.info('POST: {}, BODY: {}'.format(url, body))
