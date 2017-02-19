@@ -8,22 +8,35 @@ def select_columns(resource, columns):
 
 
 def to_zoho_value(value):
+    cdata = '<![CDATA[{}]]>'
+
     if value is None:
         return ''
     elif isinstance(value, list):
-        return ';'.join(value)
+        return wrap_item_details(value)
+    elif isinstance(value, set):
+        return cdata.format(';'.join(value))
     elif isinstance(value, datetime) or isinstance(value, date):
-        return value.strftime('%Y-%m-%d %H:%M:%S')
+        return cdata.format(value.strftime('%Y-%m-%d %H:%M:%S'))
     else:
-        return value
+        return cdata.format(value)
 
 
 def record_to_xml_data(record: dict):
-    lines  = ['<FL val="{}"><![CDATA[{}]]></FL>'.format(k, to_zoho_value(v))
+    lines  = ['<FL val="{}">{}</FL>'.format(k, to_zoho_value(v))
               for k, v in record.items()]
 
     return ''.join(lines)
 
+
+def wrap_item_details(items):
+    if type(items) is not list:
+        items = [items]
+
+    rows = ['<product no="{}">{}</product>'.format(index + 1, record_to_xml_data(item))
+            for index, item in enumerate(items)]
+
+    return ''.join(rows)
 
 def wrap_items(items, *, module_name: str):
     if type(items) is not list:
