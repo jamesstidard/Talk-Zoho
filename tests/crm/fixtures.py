@@ -37,5 +37,10 @@ def contact_id(scope="session"):
 
 
 @pytest.fixture
+def product_id(scope="session"):
+    return "703005000001647001"
+
+
+@pytest.fixture
 def eu_contact_id(scope="session"):
     return "1770000000501005"

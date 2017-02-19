@@ -7,34 +7,42 @@ def select_columns(resource, columns):
     return resource.lower() + '(' + ','.join(columns) + ')' if columns else ''
 
 
-def to_zoho_value(value):
+def to_zoho_value(value, *, key=None):
+    cdata = '<![CDATA[{}]]>'
+
     if value is None:
         return ''
+    elif key == 'Product Details' and isinstance(value, list):
+        return format_rows(name='product', items=value)
     elif isinstance(value, list):
-        return ';'.join(value)
+        return cdata.format(';'.join(value))
     elif isinstance(value, datetime) or isinstance(value, date):
-        return value.strftime('%Y-%m-%d %H:%M:%S')
+        return cdata.format(value.strftime('%Y-%m-%d %H:%M:%S'))
     else:
-        return value
+        return cdata.format(value)
 
 
 def record_to_xml_data(record: dict):
-    lines  = ['<FL val="{}"><![CDATA[{}]]></FL>'.format(k, to_zoho_value(v))
-              for k, v in record.items()]
+    lines = ['<FL val="{}">{}</FL>'.format(k, to_zoho_value(v, key=k)) for
+             k, v in record.items()]
 
     return ''.join(lines)
 
 
-def wrap_items(items, *, module_name: str):
+def format_rows(*, name: str='row', items):
     if type(items) is not list:
         items = [items]
 
-    rows = ['<row no="{}">{}</row>'.format(index + 1, record_to_xml_data(item))
+    rows = ['<{0} no="{1}">{2}</{0}>'.format(name, index + 1, record_to_xml_data(item))
             for index, item in enumerate(items)]
 
+    return ''.join(rows)
+
+
+def wrap_items(items, *, module_name: str):
     return '<{module_name}>{rows}</{module_name}>'.format(
         module_name=module_name,
-        rows=''.join(rows))
+        rows=''.join(format_rows(items=items)))
 
 
 def unwrap_items(response):
