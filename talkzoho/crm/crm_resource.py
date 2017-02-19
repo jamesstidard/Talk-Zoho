@@ -75,7 +75,6 @@ class CRMResource(Resource):
 
         url  = '{module_url}/insertRecords'.format(module_url=module_url)
         body = urlencode({
-            'id': id,
             'version': 2,
             'xmlData': xml_record,
             'newFormat': 2,
