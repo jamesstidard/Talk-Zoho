@@ -79,7 +79,7 @@ class CRMResource(Resource):
             'xmlData': xml_record,
             'newFormat': 2,
             'wfTrigger': str(trigger_workflows).lower(),
-            'duplicateCheck': 1,
+            'duplicateCheck': 2,
             **self.base_query})
 
         logger.info('POST: {}, BODY: {}'.format(url, body))
@@ -169,7 +169,6 @@ class CRMResource(Resource):
         body = urlencode({
             'version': 2,
             'newFormat': 2,
-            'duplicateCheck': 1,
             'wfTrigger': str(trigger_workflow).lower(),
             'id': record_id,
             'xmlData': xml_record,
