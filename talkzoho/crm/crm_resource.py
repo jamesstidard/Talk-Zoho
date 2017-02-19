@@ -157,7 +157,7 @@ class CRMResource(Resource):
 
     async def update(self,
                      record: dict, *,
-                     trigger_workflow: bool=True):
+                     trigger_workflows: bool=True):
         module_map  = await self.get_canonical_map()
         module_name = module_map.canonical_name
         module_url  = self.module_url(module_name)
@@ -169,7 +169,7 @@ class CRMResource(Resource):
         body = urlencode({
             'version': 2,
             'newFormat': 2,
-            'wfTrigger': str(trigger_workflow).lower(),
+            'wfTrigger': str(trigger_workflows).lower(),
             'id': record_id,
             'xmlData': xml_record,
             **self.base_query})
@@ -180,6 +180,16 @@ class CRMResource(Resource):
 
         [item] = unwrap_items(body)
         return item['Id']
+
+    async def upsert(self,
+                     record: dict, *,
+                     trigger_workflows: bool=True):
+        module_map = await self.get_canonical_map()
+        module_key = make_module_id_name(module_map=module_map)
+        if module_key in record:
+            self.update(record=record, trigger_workflows=trigger_workflows)
+        else:
+            self.insert(record=record, trigger_workflows=trigger_workflows)
 
     async def delete(self, id: Union[int, str]):
         module_map  = await self.get_canonical_map()
