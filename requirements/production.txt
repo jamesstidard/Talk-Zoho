@@ -1,4 +1,4 @@
 fuzzywuzzy
-python-Levenshtein
+python-Levenshtein==0.12.0
 tornado
 -e .
