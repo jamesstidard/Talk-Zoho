@@ -39,7 +39,7 @@ def wrap_items(items, *, module_name: str):
 
 def unwrap_items(response):
     try:
-        result   = response['response']['result']
+        result = response['response']['result']
 
         if len(result) == 1:
             # Don't know the resource name but should be the only key
@@ -51,10 +51,7 @@ def unwrap_items(response):
         else:
             raise ValueError('Unexpected looking response.')
 
-        # wrap single resource results in array
-        items = rows if isinstance(rows, list) else [rows]
-
-        return [translate_item(i) for i in items]
+        return translate_items(rows)
     except (AssertionError, KeyError):
         return unwrap_error(response)
 
@@ -108,6 +105,12 @@ def http_status_code(*, zoho_code):  # pragma: no cover
         return 500  # internal server error
 
 
+def translate_items(rows):
+    # wrap single resource results in array
+    items = rows if isinstance(rows, list) else [rows]
+    return [translate_item(i) for i in items]
+
+
 def translate_item(item):
     fields = item.get('fl', item.get('FL'))
     fields = fields if isinstance(fields, list) else [fields]
@@ -115,7 +118,9 @@ def translate_item(item):
     def nullify(value):
         return None if value == 'null' else value
 
-    return {kwarg['val']: nullify(kwarg['content']) for kwarg in fields}
+    return {
+        kwarg['val']: nullify(kwarg['content']) if 'content' in kwarg else translate_items(kwarg['product'])
+        for kwarg in fields}
 
 
 def make_module_id_name(module_map):
