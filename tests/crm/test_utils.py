@@ -1,4 +1,5 @@
-from talkzoho.crm.utils import translate_item
+from talkzoho.crm.crm_client import ModuleMap
+from talkzoho.crm.utils import translate_item, make_module_id_name
 
 
 def test_replace_null_strings_in_item():
@@ -25,3 +26,11 @@ def test_single_fl_obj():
     }
     item = translate_item(item)
     assert item['SMOWNERID']
+
+
+def test_make_module_id_name_default_module():
+    module_map = ModuleMap(
+        canonical_name='Potentials',
+        singular_alias='Opportunity',
+        plural_alias='Opportunities')
+    assert 'POTENTIAL' == make_module_id_name(module_map)

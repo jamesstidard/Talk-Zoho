@@ -1,6 +1,10 @@
+import inflect
+
 from datetime import date, datetime
 
 from tornado.web import HTTPError
+
+singular_noun = inflect.engine().singular_noun
 
 
 def select_columns(resource, columns):
@@ -135,4 +139,4 @@ def make_module_id_name(module_map):
     if module_map.canonical_name.startswith('CustomModule'):
         return '{}_ID'.format(module_map.canonical_name.upper())
     else:
-        return '{}ID'.format(module_map.singular_alias.upper())
+        return '{}ID'.format(singular_noun(module_map.singular_alias.upper()))
