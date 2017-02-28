@@ -139,4 +139,4 @@ def make_module_id_name(module_map):
     if module_map.canonical_name.startswith('CustomModule'):
         return '{}_ID'.format(module_map.canonical_name.upper())
     else:
-        return '{}ID'.format(singular_noun(module_map.singular_alias.upper()))
+        return '{}ID'.format(singular_noun(module_map.canonical_name.upper()))

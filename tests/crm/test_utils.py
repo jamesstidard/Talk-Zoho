@@ -33,4 +33,4 @@ def test_make_module_id_name_default_module():
         canonical_name='Potentials',
         singular_alias='Opportunity',
         plural_alias='Opportunities')
-    assert 'POTENTIAL' == make_module_id_name(module_map)
+    assert 'POTENTIALID' == make_module_id_name(module_map)
