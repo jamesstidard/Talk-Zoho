@@ -187,9 +187,9 @@ class CRMResource(Resource):
         module_map = await self.get_canonical_map()
         module_key = make_module_id_name(module_map=module_map)
         if module_key in record:
-            self.update(record=record, trigger_workflows=trigger_workflows)
+            return await self.update(record=record, trigger_workflows=trigger_workflows)
         else:
-            self.insert(record=record, trigger_workflows=trigger_workflows)
+            return await self.insert(record=record, trigger_workflows=trigger_workflows)
 
     async def delete(self, id: Union[int, str]):
         module_map  = await self.get_canonical_map()
