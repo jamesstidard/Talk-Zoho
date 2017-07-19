@@ -1,4 +1,4 @@
-fuzzywuzzy
+fuzzywuzzy==0.15.1
 python-Levenshtein
 tornado
 inflect
